@@ -216,26 +216,28 @@ pinhui:["LINK_PINHUI"],
 annie:["LINK_ANNIE"],
 
 bond:[
-"Football jersey",
-"Retro jersey",
-"Training suit",
-"NBA jersey",
-"F1",
-"Fashion brand clothing",
-"Shoes",
-"Football shoe",
-"Children's shoes",
-"Cap",
-"T-shirt"
+{nombre:"Football jersey", link:"LINK_1"},
+{nombre:"Retro jersey", link:"LINK_2"},
+{nombre:"Training suit", link:"LINK_3"},
+{nombre:"NBA jersey", link:"LINK_4"},
+{nombre:"F1", link:"LINK_5"},
+{nombre:"Fashion brand clothing", link:"LINK_6"},
+{nombre:"Shoes", link:"LINK_7"},
+{nombre:"Football shoe", link:"LINK_8"},
+{nombre:"Children's shoes", link:"LINK_9"},
+{nombre:"Cap", link:"LINK_10"},
+{nombre:"T-shirt", link:"LINK_11"}
 ],
 
 jerry:[
-"Catálogo Camisetas",
-"Conjuntos",
-"Botines",
-"Rompevientos",
-"Hoodies"
-],
+{nombre:"Camisetas", link:"LINK_1"},
+{nombre:"Conjuntos", link:"LINK_2"},
+{nombre:"Botines", link:"LINK_3"},
+{nombre:"Rompevientos", link:"LINK_4"},
+{nombre:"Hoodies", link:"LINK_5"}
+]
+
+};
 
 xiaoli:["LINK_XIAOLI"],
 meiting:["LINK_MEITING"],
@@ -605,27 +607,27 @@ cargarTodo();
 function verCatalogo(){
 
 let vendedor=document.getElementById("vendedor").value;
-let links=catalogos[vendedor];
+let lista=catalogos[vendedor];
 
-if(!links || links.length===0){
+if(!lista || lista.length===0){
 alert("Este vendedor no tiene catálogo cargado");
 return;
 }
 
-// 🔥 SI TIENE VARIOS CATÁLOGOS
-if(links.length > 1){
+// 🔥 VARIOS CATÁLOGOS CON NOMBRE REAL
+if(lista.length > 1){
 
 let mensaje="Elegí catálogo:\n\n";
 
-links.forEach((link,i)=>{
-mensaje += `${i+1} = Catálogo ${i+1}\n`;
+lista.forEach((cat,i)=>{
+mensaje += `${i+1} = ${cat.nombre}\n`;
 });
 
 let opcion = prompt(mensaje);
 let index = parseInt(opcion) - 1;
 
-if(links[index]){
-window.open(links[index],"_blank");
+if(lista[index]){
+window.open(lista[index].link,"_blank");
 }else{
 alert("Opción inválida");
 }
@@ -633,8 +635,8 @@ alert("Opción inválida");
 return;
 }
 
-// 🔹 SI SOLO TIENE UNO
-window.open(links[0],"_blank");
+// 🔹 SI SOLO HAY UNO
+window.open(lista[0].link,"_blank");
 
 }
 
