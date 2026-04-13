@@ -593,32 +593,62 @@ sel.appendChild(op);
 cargarTodo();
 }
 
+let nombresCatalogos={
+
+bond:[
+"Football jersey",
+"Retro jersey",
+"Training suit",
+"NBA jersey",
+"F1",
+"Fashion brand clothing",
+"Shoes",
+"Football shoe",
+"Children's shoes",
+"Cap",
+"T-shirt"
+],
+
+jerry:[
+"Catálogo Camisetas",
+"Conjuntos",
+"Botines",
+"Rompevientos",
+"Hoodies"
+]
+
+};
+
 function verCatalogo(){
 
 let vendedor=document.getElementById("vendedor").value;
 
-// 🔎 buscar catalogos que empiecen con el nombre del vendedor
+// buscar links del vendedor
 let links=[];
-
 for(let key in catalogos){
 if(key.startsWith(vendedor)){
 links=links.concat(catalogos[key]);
 }
 }
 
-// si no encontró nada
-if(!links || links.length===0){
+if(!links.length){
 alert("Este vendedor no tiene catálogo cargado");
 return;
 }
 
-// 🔥 SI TIENE VARIOS
+// nombres personalizados
+let nombres = nombresCatalogos[vendedor] || [];
+
+// SI TIENE VARIOS
 if(links.length > 1){
 
 let mensaje="Elegí catálogo:\n\n";
 
 links.forEach((link,i)=>{
-mensaje += `${i+1} = Catálogo ${i+1}\n`;
+
+let nombre = nombres[i] || `Catálogo ${i+1}`;
+mensaje += `${i+1} = ${nombre}\n`;
+
 });
 
 let opcion = prompt(mensaje);
@@ -633,7 +663,7 @@ alert("Opción inválida");
 return;
 }
 
-// 🔹 SI SOLO UNO
+// SOLO UNO
 window.open(links[0],"_blank");
 
 }
