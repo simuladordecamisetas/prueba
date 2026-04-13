@@ -214,29 +214,20 @@ huang:["LINK_HUANG"],
 meiou:["LINK_MEIOU"],
 pinhui:["LINK_PINHUI"],
 annie:["LINK_ANNIE"],
-
-bond:[
-"Football jersey",
-"Retro jersey",
-"Training suit",
-"NBA jersey",
-"F1",
-"Fashion brand clothing",
-"Shoes",
-"Football shoe",
-"Children's shoes",
-"Cap",
-"T-shirt"
-],
-
-jerry:[
-"Catálogo Camisetas",
-"Conjuntos",
-"Botines",
-"Rompevientos",
-"Hoodies"
-],
-
+jerry1:["LINK_CAMISETAS"],
+jerry2:["LINK_CONJUNTOS"],
+jerry3:["LINK_OTROS"],
+bond1:["LINK_CAMISETAS"],
+bond2:["LINK_CONJUNTOS"],
+bond3:["LINK_OTROS"],
+bond4:["LINK_CAMISETAS"],
+bond5:["LINK_CONJUNTOS"],
+bond6:["LINK_OTROS"],
+bond7:["LINK_CAMISETAS"],
+bond8:["LINK_CONJUNTOS"],
+bond9:["LINK_OTROS"],
+bond10:["LINK_CAMISETAS"],
+bond11:["LINK_CONJUNTOS"],
 xiaoli:["LINK_XIAOLI"],
 meiting:["LINK_MEITING"],
 mai:["LINK_MAI"]
@@ -605,14 +596,23 @@ cargarTodo();
 function verCatalogo(){
 
 let vendedor=document.getElementById("vendedor").value;
-let links=catalogos[vendedor];
 
+// 🔎 buscar catalogos que empiecen con el nombre del vendedor
+let links=[];
+
+for(let key in catalogos){
+if(key.startsWith(vendedor)){
+links=links.concat(catalogos[key]);
+}
+}
+
+// si no encontró nada
 if(!links || links.length===0){
 alert("Este vendedor no tiene catálogo cargado");
 return;
 }
 
-// 🔥 SI TIENE VARIOS CATÁLOGOS
+// 🔥 SI TIENE VARIOS
 if(links.length > 1){
 
 let mensaje="Elegí catálogo:\n\n";
@@ -633,7 +633,7 @@ alert("Opción inválida");
 return;
 }
 
-// 🔹 SI SOLO TIENE UNO
+// 🔹 SI SOLO UNO
 window.open(links[0],"_blank");
 
 }
