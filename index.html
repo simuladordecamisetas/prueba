@@ -162,6 +162,24 @@ Ver catálogo
 <div id="declaracion" style="display:none;margin-top:15px;background:#fff3cd;padding:12px;border-radius:10px;">
 
 <b>Simulación Declaración Argentina 🇦🇷</b><br><br>
+<div id="resultadoDeclaracion" style="margin-top:10px;font-weight:bold;"></div>
+
+<!-- 💰 GANANCIA -->
+<div style="margin-top:10px; background:#ecfdf5; padding:10px; border-radius:10px;">
+
+<b>💰 Precio de venta</b><br>
+
+Precio total venta (USD):
+<input type="number" id="precioVenta" placeholder="Ej: 120">
+
+<button onclick="calcularGanancia()" 
+style="background:#22c55e; color:white; margin-top:5px;">
+Calcular ganancia
+</button>
+
+<div id="resultadoGanancia" style="margin-top:10px; font-weight:bold;"></div>
+
+</div>
 <!-- 👇 AGREGAR ESTO -->
 <div id="preciosDeclarados"></div>
 
@@ -885,6 +903,43 @@ let impuestoARS = impuestoUSD * cotizacion;
 
 // 💵 total
 let totalARS = impuestoARS + costoCorreo;
+
+function calcularGanancia(){
+
+let vendedor = document.getElementById("vendedor").value;
+let cart = carritos[vendedor] || [];
+
+let venta = parseFloat(document.getElementById("precioVenta").value) || 0;
+
+// costo real del carrito
+let costo = cart.reduce((a,b)=>a+b.precio,0);
+
+// envío del vendedor
+let envio = parseFloat(document.getElementById("envioVendedor").value) || 0;
+
+// impuestos ya calculados (los sacamos del texto)
+let resultado = document.getElementById("resultadoDeclaracion").innerText;
+
+let match = resultado.match(/TOTAL FINAL: (\d+)/);
+let impuestosARS = match ? parseFloat(match[1]) : 0;
+
+// cotización
+let cotizacion = parseFloat(document.getElementById("cotizacion").value) || 1000;
+
+// convertir impuestos a USD
+let impuestosUSD = impuestosARS / cotizacion;
+
+// costo total
+let totalCosto = costo + envio + impuestosUSD;
+
+// ganancia
+let ganancia = venta - totalCosto;
+
+document.getElementById("resultadoGanancia").innerText =
+`Costo total: $${totalCosto.toFixed(2)} USD
+
+Ganancia: $${ganancia.toFixed(2)} USD`;
+}
 
 // 🧾 mostrar
 document.getElementById("resultadoDeclaracion").innerText =
