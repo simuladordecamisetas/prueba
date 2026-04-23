@@ -909,36 +909,42 @@ function calcularGanancia(){
 let vendedor = document.getElementById("vendedor").value;
 let cart = carritos[vendedor] || [];
 
-let venta = parseFloat(document.getElementById("precioVenta").value) || 0;
+let envioVendedor = parseFloat(document.getElementById("envioVendedor")?.value) || 0;
+let cotizacion = parseFloat(document.getElementById("cotizacion")?.value) || 1000;
 
-// costo real del carrito
-let costo = cart.reduce((a,b)=>a+b.precio,0);
+// 💰 precio de venta en pesos (lo que vos cobrás)
+let precioVenta = parseFloat(document.getElementById("precioVenta")?.value) || 0;
 
-// envío del vendedor
-let envio = parseFloat(document.getElementById("envioVendedor").value) || 0;
+// 🧮 costo total en USD
+let costoUSD = envioVendedor;
 
-// impuestos ya calculados (los sacamos del texto)
-let resultado = document.getElementById("resultadoDeclaracion").innerText;
+cart.forEach((item, i)=>{
+let precio = parseFloat(document.getElementById(`precioDecl_${i}`)?.value) || 0;
+costoUSD += precio * item.cantidad;
+});
 
-let match = resultado.match(/TOTAL FINAL: (\d+)/);
-let impuestosARS = match ? parseFloat(match[1]) : 0;
+// 💱 pasar a pesos
+let costoARS = costoUSD * cotizacion;
 
-// cotización
-let cotizacion = parseFloat(document.getElementById("cotizacion").value) || 1000;
+// 📦 costo correo (estimado)
+let correo = Math.floor(Math.random() * (8000 - 6000 + 1)) + 6000;
 
-// convertir impuestos a USD
-let impuestosUSD = impuestosARS / cotizacion;
+// 💸 impuesto (50% excedente de 50 USD)
+let excedente = costoUSD > 50 ? (costoUSD - 50) : 0;
+let impuestoARS = (excedente * 0.5) * cotizacion;
 
-// costo total
-let totalCosto = costo + envio + impuestosUSD;
+// 💵 costo final
+let costoFinal = costoARS + impuestoARS + correo;
 
-// ganancia
-let ganancia = venta - totalCosto;
+// 📈 ganancia
+let ganancia = precioVenta - costoFinal;
 
 document.getElementById("resultadoGanancia").innerText =
-`Costo total: $${totalCosto.toFixed(2)} USD
+`Costo total: $${costoFinal.toFixed(0)} ARS
 
-Ganancia: $${ganancia.toFixed(2)} USD`;
+Precio de venta: $${precioVenta}
+
+Ganancia: $${ganancia.toFixed(0)} ARS`;
 }
 
 // 🧾 mostrar
