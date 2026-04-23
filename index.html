@@ -877,18 +877,14 @@ let cart = carritos[vendedor] || [];
 let envioVendedor = parseFloat(document.getElementById("envioVendedor").value) || 0;
 let cotizacion = parseFloat(document.getElementById("cotizacion").value) || 1000;
 
-// 🧮 valor declarado sumando cada producto
+// 🧮 valor declarado
 let valor = 0;
 
 cart.forEach((item, i)=>{
-
 let precio = parseFloat(document.getElementById(`precioDecl_${i}`).value) || 0;
-
 valor += precio * item.cantidad;
-
 });
 
-// ➕ envío
 valor += envioVendedor;
 
 // 📦 correo
@@ -897,39 +893,51 @@ let costoCorreo = Math.floor(Math.random() * (8000 - 6000 + 1)) + 6000;
 // 💰 impuestos
 let excedente = valor > 50 ? (valor - 50) : 0;
 let impuestoUSD = excedente * 0.5;
-
-// 💱 conversión
 let impuestoARS = impuestoUSD * cotizacion;
 
 // 💵 total
 let totalARS = impuestoARS + costoCorreo;
 
+document.getElementById("resultadoDeclaracion").innerText =
+`Valor declarado: $${valor} USD
+
+Excedente: $${excedente} USD
+
+Impuesto: $${impuestoUSD.toFixed(2)} USD
+(${impuestoARS.toFixed(0)} ARS)
+
+Correo: $${costoCorreo} ARS
+
+TOTAL: $${totalARS.toFixed(0)} ARS`;
+}
+
+
+// 💰 GANANCIA (SEPARADA Y FUNCIONANDO)
 function calcularGanancia(){
 
 let vendedor = document.getElementById("vendedor").value;
 let cart = carritos[vendedor] || [];
 
-let envioVendedor = parseFloat(document.getElementById("envioVendedor")?.value) || 0;
-let cotizacion = parseFloat(document.getElementById("cotizacion")?.value) || 1000;
+let envioVendedor = parseFloat(document.getElementById("envioVendedor").value) || 0;
+let cotizacion = parseFloat(document.getElementById("cotizacion").value) || 1000;
 
-// 💰 precio de venta en pesos (lo que vos cobrás)
-let precioVenta = parseFloat(document.getElementById("precioVenta")?.value) || 0;
+let precioVenta = parseFloat(document.getElementById("precioVenta").value) || 0;
 
-// 🧮 costo total en USD
+// 🧮 costo USD
 let costoUSD = envioVendedor;
 
 cart.forEach((item, i)=>{
-let precio = parseFloat(document.getElementById(`precioDecl_${i}`)?.value) || 0;
+let precio = parseFloat(document.getElementById(`precioDecl_${i}`).value) || 0;
 costoUSD += precio * item.cantidad;
 });
 
-// 💱 pasar a pesos
+// 💱 a pesos
 let costoARS = costoUSD * cotizacion;
 
-// 📦 costo correo (estimado)
+// 📦 correo
 let correo = Math.floor(Math.random() * (8000 - 6000 + 1)) + 6000;
 
-// 💸 impuesto (50% excedente de 50 USD)
+// 💸 impuesto
 let excedente = costoUSD > 50 ? (costoUSD - 50) : 0;
 let impuestoARS = (excedente * 0.5) * cotizacion;
 
@@ -939,26 +947,17 @@ let costoFinal = costoARS + impuestoARS + correo;
 // 📈 ganancia
 let ganancia = precioVenta - costoFinal;
 
+// 📊 margen
+let margen = ((ganancia / precioVenta) * 100) || 0;
+
 document.getElementById("resultadoGanancia").innerText =
 `Costo total: $${costoFinal.toFixed(0)} ARS
 
-Precio de venta: $${precioVenta}
+Venta: $${precioVenta}
 
-Ganancia: $${ganancia.toFixed(0)} ARS`;
-}
+Ganancia: $${ganancia.toFixed(0)} ARS
 
-// 🧾 mostrar
-document.getElementById("resultadoDeclaracion").innerText =
-`Valor declarado total: $${valor} USD
-
-Excedente: $${excedente} USD
-
-Impuesto: $${impuestoUSD.toFixed(2)} USD
-(${impuestoARS.toFixed(0)} ARS)
-
-Correo argentino: $${costoCorreo} ARS
-
-TOTAL FINAL: $${totalARS.toFixed(0)} ARS`;
+Margen: ${margen.toFixed(1)}%`;
 }
   
 </script>
