@@ -947,19 +947,47 @@ let historial = JSON.parse(localStorage.getItem("historialPedidos")) || [];
 
 cont.innerHTML = "<b>Historial de pedidos:</b><br><br>";
 
-historial.slice().reverse().forEach(pedido=>{
+historial.slice().reverse().forEach((pedido, index)=>{
 
 let texto = `<div style="background:#fff;padding:10px;border-radius:8px;margin-bottom:10px;">
 <b>${pedido.fecha}</b><br>
-Vendedor: ${pedido.vendedor}<br>`;
+Vendedor: ${pedido.vendedor}<br><br>`;
 
 pedido.items.forEach(item=>{
 texto += `${item.cantidad}x ${nombres[item.producto]}<br>`;
 });
 
-texto += "</div>";
+texto += `
+
+<button onclick="repetirPedido(${index})" 
+style="margin-top:8px;background:#2563eb;color:white;padding:6px 10px;border:none;border-radius:6px;cursor:pointer;">
+Repetir pedido
+</button>
+
+</div>`;
 
 cont.innerHTML += texto;
+
+function repetirPedido(index){
+
+let historial = JSON.parse(localStorage.getItem("historialPedidos")) || [];
+
+let pedido = historial.slice().reverse()[index];
+
+if(!pedido) return;
+
+// cargar carrito
+carritos[pedido.vendedor] = pedido.items;
+
+document.getElementById("vendedor").value = pedido.vendedor;
+
+cargarTodo();
+render();
+calcular();
+
+alert("Pedido cargado nuevamente ✅");
+
+}
 
 });
 }
