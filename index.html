@@ -100,7 +100,7 @@ white-space:pre-line;
 
 <body>
 
-<div class="container">
+<div id="pantallaPrincipal" class="container">
 <h2>Simulador PRO</h2>
 
 <div class="grid">
@@ -141,17 +141,13 @@ white-space:pre-line;
 
 <div class="total" id="total"></div>
 
-<!-- 🔁 BOTÓN NUEVO -->
-<button onclick="repetirUltimoPedido()" 
-style="background:#2563eb;color:white;">
-Repetir último pedido
-</button>
-
 <!-- 📚 HISTORIAL -->
 <div id="historial" style="margin-top:15px;"></div>
 
-<div style="margin-top:10px; text-align:center;">
-
+<button onclick="verHistorialCompleto()" 
+style="background:#6366f1;color:white;margin-top:8px;">
+Ver historial completo
+</button>
   <!-- 📂 CATÁLOGO -->
   <button onclick="verCatalogo()" 
   style="background:#0ea5e9;color:white;margin-top:10px;padding:8px 14px;border-radius:8px;border:none;cursor:pointer;">
@@ -205,6 +201,20 @@ Calcular impuestos
 </div>
 
 </div>
+</div>
+
+<!-- 🆕 PANTALLA HISTORIAL COMPLETO -->
+<div id="pantallaHistorial" class="container" style="display:none;">
+
+<h2>Historial de pedidos</h2>
+
+<button onclick="volverInicio()" 
+style="background:#64748b;color:white;margin-bottom:10px;">
+⬅ Volver
+</button>
+
+<div id="historialCompleto"></div>
+
 </div>
 
 <script>
