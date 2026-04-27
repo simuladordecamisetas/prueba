@@ -620,13 +620,16 @@ function init(){
 let pais = document.getElementById("pais").value;
 let sel = document.getElementById("vendedor");
 
-let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+let favoritos = localStorage.getItem("favoritos");
+favoritos = favoritos ? JSON.parse(favoritos) : [];
 
 sel.innerHTML = "";
 
-// ordenar: favoritos primero
-let lista = Object.keys(vendedores).sort((a,b)=>{
-return favoritos.includes(b) - favoritos.includes(a);
+// ordenar favoritos arriba
+let lista = Object.keys(vendedores);
+
+lista.sort((a,b)=>{
+return (favoritos.includes(b) ? 1 : 0) - (favoritos.includes(a) ? 1 : 0);
 });
 
 lista.forEach(v=>{
@@ -636,7 +639,6 @@ if(vendedores[v].disp.includes(pais)){
 let op = document.createElement("option");
 op.value = v;
 
-// ⭐ mostrar estrella
 op.textContent = (favoritos.includes(v) ? "⭐ " : "") + v.toUpperCase();
 
 sel.appendChild(op);
@@ -647,7 +649,6 @@ sel.appendChild(op);
 
 cargarTodo();
 }
-
 let nombresCatalogos={
 
 bond:[
@@ -1131,11 +1132,18 @@ panel.classList.remove("activo");
 
 function toggleFavorito(){
 
+alert("click favorito"); // 👈 ACÁ
+
 let vendedor = document.getElementById("vendedor").value;
 
-let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+let favoritos = localStorage.getItem("favoritos");
 
-// agregar o sacar
+if(favoritos){
+favoritos = JSON.parse(favoritos);
+}else{
+favoritos = [];
+}
+
 if(favoritos.includes(vendedor)){
 favoritos = favoritos.filter(v => v !== vendedor);
 }else{
@@ -1144,13 +1152,8 @@ favoritos.push(vendedor);
 
 localStorage.setItem("favoritos", JSON.stringify(favoritos));
 
-// recargar sin perder selección
-let actual = vendedor;
 init();
-document.getElementById("vendedor").value = actual;
-cargarTodo();
 }
-
 }
 
 });
