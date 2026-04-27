@@ -66,15 +66,14 @@ padding:15px;
 border-radius:12px;
 }
 
-/* 🔥 BOTÓN FLOTANTE (FIX IMPORTANTE) */
 #btnHistorial{
 position:fixed;
 top:20px;
 right:20px;
 
-width:auto;          /* 🔥 CLAVE */
-display:inline-block;/* 🔥 evita que se estire */
-margin:0;            /* limpia el margin-top global */
+width:auto;
+display:inline-block;
+margin:0;
 
 background:#2563eb;
 color:white;
@@ -82,14 +81,9 @@ padding:10px 14px;
 border:none;
 border-radius:50px;
 cursor:pointer;
-z-index:1000;
+z-index:2000;
 
 box-shadow:0 4px 12px rgba(0,0,0,0.3);
-}
-
-/* 🔥 CLAVE PARA QUE NO SEA GIGANTE */
-width:auto;
-margin:0;
 }
 
 /* 📦 PANEL HISTORIAL */
@@ -109,7 +103,6 @@ border-top-left-radius:15px;
 border-bottom-left-radius:15px;
 }
 
-/* ACTIVO */
 #panelHistorial.activo{
 right:0;
 }
