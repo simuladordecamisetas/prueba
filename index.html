@@ -947,7 +947,9 @@ let historial = JSON.parse(localStorage.getItem("historialPedidos")) || [];
 
 cont.innerHTML = "<b>Historial de pedidos:</b><br><br>";
 
-historial.slice().reverse().forEach((pedido, index)=>{
+historial.slice().reverse().forEach((pedido, i)=>{
+
+let indexOriginal = historial.length - 1 - i;
 
 let texto = `<div style="background:#fff;padding:10px;border-radius:8px;margin-bottom:10px;">
 <b>${pedido.fecha}</b><br>
@@ -959,8 +961,8 @@ texto += `${item.cantidad}x ${nombres[item.producto]}<br>`;
 
 texto += `
 
-<button onclick="repetirPedido(${index})" 
-style="margin-top:8px;background:#2563eb;color:white;padding:6px 10px;border:none;border-radius:6px;cursor:pointer;">
+<button onclick="repetirPedido(${indexOriginal})" 
+style="margin-top:8px;background:#2563eb;color:white;padding:6px 10px;border:none;border-radius:6px;cursor:pointer;width:100%;">
 Repetir pedido
 </button>
 
