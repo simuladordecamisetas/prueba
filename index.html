@@ -156,9 +156,10 @@ white-space:pre-line;
 
 <label>Vendedor</label>
 <select id="vendedor" onchange="cargarTodo()"></select>
+
 <button onclick="toggleFavorito()" 
 style="background:#f59e0b;color:white;">
-⭐ Marcar / quitar favorito
+⭐ Favorito
 </button>
 
 <label>Producto</label>
@@ -615,20 +616,35 @@ ems:20
 let carritos={};
 
 function init(){
-let pais=document.getElementById("pais").value;
-let sel=document.getElementById("vendedor");
-sel.innerHTML="";
 
-for(let v in vendedores){
-if(vendedores[v].disp.includes(pais)){
-let op=document.createElement("option");
-op.value=v;
+let pais = document.getElementById("pais").value;
+let sel = document.getElementById("vendedor");
 
 let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+
+sel.innerHTML = "";
+
+// ordenar: favoritos primero
+let lista = Object.keys(vendedores).sort((a,b)=>{
+return favoritos.includes(b) - favoritos.includes(a);
+});
+
+lista.forEach(v=>{
+
+if(vendedores[v].disp.includes(pais)){
+
+let op = document.createElement("option");
+op.value = v;
+
+// ⭐ mostrar estrella
 op.textContent = (favoritos.includes(v) ? "⭐ " : "") + v.toUpperCase();
 
 sel.appendChild(op);
-}}
+
+}
+
+});
+
 cargarTodo();
 }
 
@@ -1119,6 +1135,7 @@ let vendedor = document.getElementById("vendedor").value;
 
 let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
 
+// agregar o sacar
 if(favoritos.includes(vendedor)){
 favoritos = favoritos.filter(v => v !== vendedor);
 }else{
@@ -1127,11 +1144,11 @@ favoritos.push(vendedor);
 
 localStorage.setItem("favoritos", JSON.stringify(favoritos));
 
-// refrescar lista
+// recargar sin perder selección
+let actual = vendedor;
 init();
+document.getElementById("vendedor").value = actual;
+cargarTodo();
 
 }
-}
-
-});
 </script>
