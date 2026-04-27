@@ -968,6 +968,10 @@ Repetir pedido
 
 cont.innerHTML += texto;
 
+});
+
+}
+
 function repetirPedido(index){
 
 let historial = JSON.parse(localStorage.getItem("historialPedidos")) || [];
@@ -988,10 +992,4 @@ calcular();
 alert("Pedido cargado nuevamente ✅");
 
 }
-
-});
-}
-
-
-
 </script>
