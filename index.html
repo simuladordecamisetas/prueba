@@ -618,12 +618,32 @@ ems:20
 let carritos={};
 
 function init(){
+
 let pais=document.getElementById("pais").value;
 let sel=document.getElementById("vendedor");
+
 sel.innerHTML="";
 
+let listaFavoritos = [];
+let listaNormales = [];
+
+// separar vendedores
 for(let v in vendedores){
 if(vendedores[v].disp.includes(pais)){
+
+if(favoritos.includes(v)){
+listaFavoritos.push(v);
+}else{
+listaNormales.push(v);
+}
+
+}}
+
+// juntar (favoritos arriba)
+let listaFinal = [...listaFavoritos, ...listaNormales];
+
+// render
+listaFinal.forEach(v => {
 
 let op=document.createElement("option");
 op.value=v;
@@ -636,7 +656,8 @@ op.textContent=v.toUpperCase();
 
 sel.appendChild(op);
 
-}}
+});
+
 cargarTodo();
 }
 
