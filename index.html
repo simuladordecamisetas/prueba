@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>PRUEBA</title>
+<title>Simulador PRO</title>
 
 <style> body{
 font-family:'Segoe UI', Arial;
@@ -140,7 +140,7 @@ white-space:pre-line;
 <body>
 
 <div class="container">
-<h2>PRUEBA</h2>
+<h2>Simulador PRO</h2>
 
 <div class="grid">
 
@@ -947,17 +947,35 @@ let historial = JSON.parse(localStorage.getItem("historialPedidos")) || [];
 
 let fecha = new Date().toLocaleString();
 
+// 🔥 CALCULAR ENVÍO EN ESE MOMENTO
+let v = vendedores[vendedor];
+let tipo = document.getElementById("tipoEnvio")?.value || "normal";
+
+let totalItems = cart.reduce((a,b)=>a+b.cantidad,0);
+
+let envio;
+if(tipo==="ems" && v.ems){
+envio = v.ems;
+}else{
+envio = v.env(totalItems);
+}
+
+// 🔥 CALCULAR TOTAL FINAL
+let total = cart.reduce((a,b)=>a+b.precio,0) + envio;
+
+// 🔥 GUARDAR TODO
 historial.push({
 fecha,
 vendedor,
-items: cart
+items: JSON.parse(JSON.stringify(cart)),
+envio,
+total
 });
 
 localStorage.setItem("historialPedidos", JSON.stringify(historial));
 
 renderHistorial();
 }
-
 
 function renderHistorial(){
 
@@ -968,6 +986,16 @@ let historial = JSON.parse(localStorage.getItem("historialPedidos")) || [];
 
 cont.innerHTML = "";
 
+// 🔥 BOTÓN VACIAR HISTORIAL
+if(historial.length > 0){
+cont.innerHTML += `
+<button onclick="vaciarHistorial()"
+style="margin-bottom:10px;background:#ef4444;color:white;padding:8px;border:none;border-radius:8px;cursor:pointer;width:100%;">
+Vaciar historial
+</button>
+`;
+}
+
 historial.slice().reverse().forEach((pedido, i)=>{
 
 let indexOriginal = historial.length - 1 - i;
@@ -976,13 +1004,27 @@ let texto = `<div style="background:#f1f5f9;padding:10px;border-radius:8px;margi
 <b>${pedido.fecha}</b><br>
 Vendedor: ${pedido.vendedor}<br><br>`;
 
+// 🛒 ITEMS
 pedido.items.forEach(item=>{
-texto += `${item.cantidad}x ${nombres[item.producto]}<br>`;
+texto += `${item.cantidad}x ${nombres[item.producto]} - $${item.precio}<br>`;
 });
 
-texto += `
+// 🔥 ENVÍO (fallback para viejos)
+let envio = pedido.envio ?? 0;
 
-<button onclick="repetirPedido(${indexOriginal})" 
+// 🔥 TOTAL (fallback para viejos)
+let total = pedido.total ?? (pedido.items.reduce((a,b)=>a+b.precio,0) + envio);
+
+// 📦 MOSTRAR
+texto += `
+<br>
+Envío: $${envio}<br>
+<b>Total: $${total}</b>
+`;
+
+// 🔁 BOTÓN
+texto += `
+<button onclick="repetirPedido(${indexOriginal})"
 style="margin-top:8px;background:#2563eb;color:white;padding:6px 10px;border:none;border-radius:6px;cursor:pointer;width:100%;">
 Repetir pedido
 </button>
@@ -992,6 +1034,7 @@ Repetir pedido
 cont.innerHTML += texto;
 
 });
+
 }
 
 function repetirPedido(index){
@@ -1040,4 +1083,30 @@ let panel = document.getElementById("panelHistorial");
 panel.classList.toggle("activo");
 }
 
+function vaciarHistorial(){
+
+let confirmar = confirm("¿Seguro querés borrar todo el historial?");
+if(!confirmar) return;
+
+localStorage.removeItem("historialPedidos");
+
+renderHistorial();
+
+}
+document.addEventListener("click", function(e){
+
+let panel = document.getElementById("panelHistorial");
+let boton = document.getElementById("btnHistorial");
+
+// si el panel está abierto
+if(panel.classList.contains("activo")){
+
+// si NO clickeaste ni el panel ni el botón → cerrar
+if(!panel.contains(e.target) && !boton.contains(e.target)){
+panel.classList.remove("activo");
+}
+
+}
+
+});
 </script>
