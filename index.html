@@ -838,23 +838,28 @@ generarInputsDeclaracion();
 }
 
 function render(){
-let vendedor=document.getElementById("vendedor").value;
-let ul=document.getElementById("carrito");
-ul.innerHTML="";
+let vendedor = document.getElementById("vendedor").value;
+let ul = document.getElementById("carrito");
+ul.innerHTML = "";
 
-(carritos[vendedor]||[]).forEach((item,i)=>{
+(carritos[vendedor] || []).forEach((item, i) => {
 
-let extrasTexto=item.extras.length?" + "+item.extras.join(" + "):"";
+let extrasTexto = item.extras.length ? " + " + item.extras.join(" + ") : "";
 
 ul.innerHTML += `
 <li class="item-carrito">
-  ${item.cantidad}x ${nombres[item.producto]}${extrasTexto} - $${item.precio}
-  <button class="btn-eliminar" onclick="eliminar(${i})">X</button>
+<span>
+${item.cantidad}x ${nombres[item.producto]}${extrasTexto} - $${item.precio}
+</span>
+<button class="btn-eliminar" onclick="eliminar(${i})">X</button>
 </li>
 `;
 
+});
+}
+
 function eliminar(i){
-let vendedor=document.getElementById("vendedor").value;
+let vendedor = document.getElementById("vendedor").value;
 carritos[vendedor].splice(i,1);
 render();
 calcular();
