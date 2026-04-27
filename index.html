@@ -157,6 +157,11 @@ white-space:pre-line;
 <label>Vendedor</label>
 <select id="vendedor" onchange="cargarTodo()"></select>
 
+<button onclick="toggleFavorito()" 
+style="background:#f59e0b;color:white;">
+⭐ Marcar / Quitar favorito
+</button>
+
 <label>Producto</label>
 <select id="producto"></select>
 
@@ -367,6 +372,8 @@ jacket:"Jacket",
 pants:"Pants",
 jacketPants:"Jacket + Pants"
 };
+
+let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
 
 let vendedores={
 
@@ -617,10 +624,18 @@ sel.innerHTML="";
 
 for(let v in vendedores){
 if(vendedores[v].disp.includes(pais)){
+
 let op=document.createElement("option");
 op.value=v;
+
+if(favoritos.includes(v)){
+op.textContent="⭐ "+v.toUpperCase();
+}else{
 op.textContent=v.toUpperCase();
+}
+
 sel.appendChild(op);
+
 }}
 cargarTodo();
 }
@@ -1104,6 +1119,21 @@ if(panel.classList.contains("activo")){
 // si NO clickeaste ni el panel ni el botón → cerrar
 if(!panel.contains(e.target) && !boton.contains(e.target)){
 panel.classList.remove("activo");
+}
+
+function toggleFavorito(){
+
+let vendedor = document.getElementById("vendedor").value;
+
+if(favoritos.includes(vendedor)){
+favoritos = favoritos.filter(v => v !== vendedor);
+}else{
+favoritos.push(vendedor);
+}
+
+localStorage.setItem("favoritos", JSON.stringify(favoritos));
+
+init();
 }
 
 }
