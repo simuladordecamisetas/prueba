@@ -1129,16 +1129,55 @@ function toggleFavorito(){
 
 let vendedor = document.getElementById("vendedor").value;
 
+if(!vendedor) return;
+
+// agregar o sacar
 if(favoritos.includes(vendedor)){
-favoritos = favoritos.filter(v=>v!==vendedor);
+favoritos = favoritos.filter(v=>v !== vendedor);
 }else{
 favoritos.push(vendedor);
 }
 
+// guardar
 localStorage.setItem("favoritos", JSON.stringify(favoritos));
 
-init(); // refresca lista
+// 🔥 recargar TODO correctamente
+cargarVendedores();
+cargarTodo();
+
 }
+function cargarVendedores(){
+
+let pais=document.getElementById("pais").value;
+let sel=document.getElementById("vendedor");
+
+let actual = sel.value;
+
+sel.innerHTML="";
+
+// ordenar favoritos primero
+let lista = Object.keys(vendedores).sort((a,b)=>{
+return favoritos.includes(b) - favoritos.includes(a);
+});
+
+lista.forEach(v=>{
+if(vendedores[v].disp.includes(pais)){
+
+let op=document.createElement("option");
+
+let estrella = favoritos.includes(v) ? " ⭐" : "";
+
+op.value=v;
+op.textContent=v.toUpperCase()+estrella;
+
+sel.appendChild(op);
+
+}
+});
+
+// mantener selección
+if(actual) sel.value = actual;
+
 }
 
 });
