@@ -980,11 +980,12 @@ let pedido = historial.slice().reverse()[index];
 
 if(!pedido) return;
 
-// cargar carrito
-carritos[pedido.vendedor] = pedido.items;
+// 🔥 copiar bien (sin romper historial)
+carritos[pedido.vendedor] = JSON.parse(JSON.stringify(pedido.items));
 
+// 🔥 actualizar UI
 document.getElementById("vendedor").value = pedido.vendedor;
-
+init();
 cargarTodo();
 render();
 calcular();
