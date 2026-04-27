@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <title>PRUEBA</title>
 
-<style> body{
+<style> 
+
+body{
 font-family:'Segoe UI', Arial;
 margin:0;
 padding:20px;
@@ -132,6 +134,26 @@ background:#e0f2fe;
 padding:10px;
 border-radius:10px;
 white-space:pre-line;
+}
+
+.item-carrito{
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:white;
+margin:6px 0;
+padding:10px;
+border-radius:8px;
+}
+
+.btn-eliminar{
+background:#ef4444;
+color:white;
+border:none;
+border-radius:6px;
+padding:4px 10px;
+cursor:pointer;
+width:auto;
 }
 </style>
 
@@ -829,11 +851,11 @@ ul.innerHTML="";
 let extrasTexto=item.extras.length?" + "+item.extras.join(" + "):"";
 
 ul.innerHTML+=`
-<li>${item.cantidad}x ${nombres[item.producto]}${extrasTexto} - $${item.precio}
-<button class="btn-eliminar" onclick="eliminar(${i})">X</button></li>
+<li class="item-carrito">
+  <span>${item.cantidad}x ${nombres[item.producto]}${extrasTexto} - $${item.precio}</span>
+  <button class="btn-eliminar" onclick="eliminar(${i})">X</button>
+</li>
 `;
-});
-}
 
 function eliminar(i){
 let vendedor=document.getElementById("vendedor").value;
