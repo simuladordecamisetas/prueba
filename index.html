@@ -618,47 +618,32 @@ ems:20
 let carritos={};
 
 function init(){
-
 let pais=document.getElementById("pais").value;
 let sel=document.getElementById("vendedor");
 
+let vendedorActual = sel.value; // 🔥 guarda selección actual
+
 sel.innerHTML="";
 
-let listaFavoritos = [];
-let listaNormales = [];
-
-// separar vendedores
 for(let v in vendedores){
 if(vendedores[v].disp.includes(pais)){
-
-if(favoritos.includes(v)){
-listaFavoritos.push(v);
-}else{
-listaNormales.push(v);
-}
-
-}}
-
-// juntar (favoritos arriba)
-let listaFinal = [...listaFavoritos, ...listaNormales];
-
-// render
-listaFinal.forEach(v => {
 
 let op=document.createElement("option");
 op.value=v;
 
-if(favoritos.includes(v)){
-op.textContent="⭐ "+v.toUpperCase();
-}else{
-op.textContent=v.toUpperCase();
-}
+let estrella = favoritos.includes(v) ? "⭐ " : "";
+op.textContent = estrella + v.toUpperCase();
 
 sel.appendChild(op);
+}}
 
-});
+// 🔥 volver a seleccionar el mismo vendedor si existe
+if(vendedorActual && vendedores[vendedorActual]){
+sel.value = vendedorActual;
+}
 
 cargarTodo();
+actualizarFavoritosUI();
 }
 
 let nombresCatalogos={
@@ -784,6 +769,7 @@ envioSelect.onchange=calcular;
 render();
 calcular();
 generarInputsDeclaracion();
+actualizarBotonFavorito();
 }
   
 let pais = document.getElementById("pais").value;
@@ -1154,9 +1140,24 @@ favoritos.push(vendedor);
 
 localStorage.setItem("favoritos", JSON.stringify(favoritos));
 
-init();
+actualizarFavoritosUI();
+init(); // refresca el select con estrellas
 }
 
+function actualizarFavoritosUI(){
+
+let vendedor = document.getElementById("vendedor").value;
+let btn = document.querySelector("button[onclick='toggleFavorito()']");
+
+if(!btn) return;
+
+if(favoritos.includes(vendedor)){
+btn.innerText = "⭐ Quitar favorito";
+btn.style.background = "#dc2626";
+}else{
+btn.innerText = "⭐ Marcar favorito";
+btn.style.background = "#f59e0b";
+}
 }
 
 });
