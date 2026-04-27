@@ -256,40 +256,30 @@ alert("Tu carrito está vacío");
 return;
 }
 
-// 🧾 MENSAJE AUTOMATICO (CONDICIONAL PRO)
+// 🔥 GUARDAR SIEMPRE
+guardarPedido();
+
 let mensaje="Hola, quiero consultar por:\n\n";
 
 carrito.forEach(item=>{
 
-let size=" "; // después si querés lo hacemos dinámico
-let version=nombres[item.producto] || item.producto;
+let size=" ";
+let version=nombres[item.producto] ?? item.producto;
 
 let nombreNumero="";
 let parchesTexto="";
 
-// detectar extras
 item.extras.forEach(e=>{
-if(e.includes("parches")){
-parchesTexto=e; // ej: "3 parches"
-}
-else if(!e.includes("XL")){
-nombreNumero=e; // personalización
-}
+if(e.includes("parches")) parchesTexto=e;
+else if(!e.includes("XL")) nombreNumero=e;
 });
 
-// base
 mensaje+=`SIZE: ${size}\n`;
 mensaje+=`VERSION: ${version}\n`;
 mensaje+=`QUANTITY: ${item.cantidad}\n`;
 
-// 👇 SOLO SI EXISTEN
-if(nombreNumero){
-mensaje+=`NAME AND NUMBER: ${nombreNumero}\n`;
-}
-
-if(parchesTexto){
-mensaje+=`PATCHES: ${parchesTexto}\n`;
-}
+if(nombreNumero) mensaje+=`NAME AND NUMBER: ${nombreNumero}\n`;
+if(parchesTexto) mensaje+=`PATCHES: ${parchesTexto}\n`;
 
 mensaje+="\n";
 
@@ -297,40 +287,18 @@ mensaje+="\n";
 
 mensaje+="⚠ Voy a enviar fotos de los productos";
 
-// ⚠ AVISO ANTES DE SALIR
-let confirmacion = confirm(
-"⚠ IMPORTANTE\n\n" +
-"Este simulador NO envía pedidos automáticamente.\n\n" +
-"Antes de continuar:\n" +
-"• Tenés que mandar FOTOS del producto y/o parches\n" +
-"• El pedido se coordina manualmente\n" +
-"• Elegí manualmente el talle\n\n" +
-"¿Querés ir al chat del vendedor?"
-);
-
+let confirmacion = confirm("¿Querés ir al chat del vendedor?");
 if(!confirmacion) return;
 
-// 🔗 ELECCION LINK
 let link;
 
 if(vendedor==="annie"){
-
-let opcion = prompt(
-"Elegí número de Annie:\n\n1 = Número principal\n2 = Número secundario"
-);
-
-if(opcion==="2"){
-link = contactos.annie2;
-}else{
-link = contactos.annie1;
-}
-
+let opcion = prompt("1 = principal\n2 = secundario");
+link = (opcion==="2") ? contactos.annie2 : contactos.annie1;
 }else{
 link = contactos[vendedor];
 }
 
-guardarPedido();
-// 🚀 REDIRECCION
 window.open(link+"?text="+encodeURIComponent(mensaje),"_blank");
 
 }
@@ -960,32 +928,27 @@ texto += `${item.cantidad}x ${nombres[item.producto]}<br>`;
 });
 
 texto += `
-
 <button onclick="repetirPedido(${indexOriginal})" 
-style="margin-top:8px;background:#2563eb;color:white;padding:6px 10px;border:none;border-radius:6px;cursor:pointer;width:100%;">
-Repetir pedido
+style="margin-top:10px;background:#2563eb;color:white;padding:10px;border:none;border-radius:6px;cursor:pointer;width:100%;">
+🔁 Repetir pedido
 </button>
-
 </div>`;
 
 cont.innerHTML += texto;
 
 });
-
 }
 
 function repetirPedido(index){
 
 let historial = JSON.parse(localStorage.getItem("historialPedidos")) || [];
 
-let pedido = historial.slice().reverse()[index];
+let pedido = historial[index]; // 🔥 FIX ACA
 
 if(!pedido) return;
 
-// 🔥 copiar bien (sin romper historial)
 carritos[pedido.vendedor] = JSON.parse(JSON.stringify(pedido.items));
 
-// 🔥 actualizar UI
 document.getElementById("vendedor").value = pedido.vendedor;
 init();
 cargarTodo();
@@ -993,6 +956,6 @@ render();
 calcular();
 
 alert("Pedido cargado nuevamente ✅");
-
 }
+  
 </script>
