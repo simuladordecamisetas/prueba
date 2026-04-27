@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Prueba</title>
+<title>PRUEBA</title>
 
 <style> body{
 font-family:'Segoe UI', Arial;
@@ -156,11 +156,6 @@ white-space:pre-line;
 
 <label>Vendedor</label>
 <select id="vendedor" onchange="cargarTodo()"></select>
-
-<button onclick="toggleFavorito()" 
-style="background:#f59e0b;color:white;">
-⭐ Marcar / Quitar favorito
-</button>
 
 <label>Producto</label>
 <select id="producto"></select>
@@ -372,8 +367,6 @@ jacket:"Jacket",
 pants:"Pants",
 jacketPants:"Jacket + Pants"
 };
-
-let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
 
 let vendedores={
 
@@ -620,30 +613,16 @@ let carritos={};
 function init(){
 let pais=document.getElementById("pais").value;
 let sel=document.getElementById("vendedor");
-
-let vendedorActual = sel.value; // 🔥 guarda selección actual
-
 sel.innerHTML="";
 
 for(let v in vendedores){
 if(vendedores[v].disp.includes(pais)){
-
 let op=document.createElement("option");
 op.value=v;
-
-let estrella = favoritos.includes(v) ? "⭐ " : "";
-op.textContent = estrella + v.toUpperCase();
-
+op.textContent=v.toUpperCase();
 sel.appendChild(op);
 }}
-
-// 🔥 volver a seleccionar el mismo vendedor si existe
-if(vendedorActual && vendedores[vendedorActual]){
-sel.value = vendedorActual;
-}
-
 cargarTodo();
-actualizarFavoritosUI();
 }
 
 let nombresCatalogos={
@@ -769,7 +748,6 @@ envioSelect.onchange=calcular;
 render();
 calcular();
 generarInputsDeclaracion();
-actualizarBotonFavorito();
 }
   
 let pais = document.getElementById("pais").value;
@@ -1128,36 +1106,6 @@ if(!panel.contains(e.target) && !boton.contains(e.target)){
 panel.classList.remove("activo");
 }
 
-function toggleFavorito(){
-
-let vendedor = document.getElementById("vendedor").value;
-
-if(favoritos.includes(vendedor)){
-favoritos = favoritos.filter(v => v !== vendedor);
-}else{
-favoritos.push(vendedor);
-}
-
-localStorage.setItem("favoritos", JSON.stringify(favoritos));
-
-actualizarFavoritosUI();
-init(); // refresca el select con estrellas
-}
-
-function actualizarFavoritosUI(){
-
-let vendedor = document.getElementById("vendedor").value;
-let btn = document.querySelector("button[onclick='toggleFavorito()']");
-
-if(!btn) return;
-
-if(favoritos.includes(vendedor)){
-btn.innerText = "⭐ Quitar favorito";
-btn.style.background = "#dc2626";
-}else{
-btn.innerText = "⭐ Marcar favorito";
-btn.style.background = "#f59e0b";
-}
 }
 
 });
