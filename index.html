@@ -140,6 +140,11 @@ white-space:pre-line;
 <div class="total" id="total"></div>
 
 <!-- 📚 HISTORIAL (PEGAR ACÁ) -->
+<button onclick="repetirPedido(${indexOriginal})" 
+style="margin-top:10px;background:#2563eb;color:white;padding:10px;border:none;border-radius:6px;cursor:pointer;width:100%;">
+🔁 Repetir pedido
+</button>
+</div>`;
 <div id="historial" style="margin-top:15px;"></div>
 
 <div style="margin-top:10px; text-align:center;">
@@ -928,11 +933,7 @@ texto += `${item.cantidad}x ${nombres[item.producto]}<br>`;
 });
 
 texto += `
-<button onclick="repetirPedido(${indexOriginal})" 
-style="margin-top:10px;background:#2563eb;color:white;padding:10px;border:none;border-radius:6px;cursor:pointer;width:100%;">
-🔁 Repetir pedido
-</button>
-</div>`;
+
 
 cont.innerHTML += texto;
 
