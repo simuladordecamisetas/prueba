@@ -136,10 +136,11 @@ white-space:pre-line;
 <div class="card">
 <h3>Carrito</h3>
 <ul id="carrito"></ul>
-
 <button class="btn-vaciar" onclick="vaciar()">Vaciar</button>
-
 <div class="total" id="total"></div>
+
+<!-- 📚 HISTORIAL (PEGAR ACÁ) -->
+<div id="historial" style="margin-top:15px;"></div>
 
 <div style="margin-top:10px; text-align:center;">
 
@@ -309,7 +310,6 @@ let confirmacion = confirm(
 
 if(!confirmacion) return;
 
-
 // 🔗 ELECCION LINK
 let link;
 
@@ -329,6 +329,7 @@ link = contactos.annie1;
 link = contactos[vendedor];
 }
 
+guardarPedido();
 // 🚀 REDIRECCION
 window.open(link+"?text="+encodeURIComponent(mensaje),"_blank");
 
@@ -858,6 +859,7 @@ TOTAL: $${subtotal+envio}`;
 document.getElementById("tipoEnvio").addEventListener("change",calcular);
 
 init();
+renderHistorial();
 
 function calcularDeclaracion(){
 
@@ -907,8 +909,61 @@ Correo argentino: $${costoCorreo} ARS
 
 TOTAL FINAL: $${totalARS.toFixed(0)} ARS`;
 }
-  
-</script>
 
-</body>
-</html>
+
+// ============================
+// 📚 HISTORIAL DE PEDIDOS
+// ============================
+
+function guardarPedido(){
+
+let vendedor = document.getElementById("vendedor").value;
+let cart = carritos[vendedor] || [];
+
+if(cart.length === 0) return;
+
+let historial = JSON.parse(localStorage.getItem("historialPedidos")) || [];
+
+let fecha = new Date().toLocaleString();
+
+historial.push({
+fecha,
+vendedor,
+items: cart
+});
+
+localStorage.setItem("historialPedidos", JSON.stringify(historial));
+
+renderHistorial();
+}
+
+
+function renderHistorial(){
+
+let cont = document.getElementById("historial");
+if(!cont) return;
+
+let historial = JSON.parse(localStorage.getItem("historialPedidos")) || [];
+
+cont.innerHTML = "<b>Historial de pedidos:</b><br><br>";
+
+historial.slice().reverse().forEach(pedido=>{
+
+let texto = `<div style="background:#fff;padding:10px;border-radius:8px;margin-bottom:10px;">
+<b>${pedido.fecha}</b><br>
+Vendedor: ${pedido.vendedor}<br>`;
+
+pedido.items.forEach(item=>{
+texto += `${item.cantidad}x ${nombres[item.producto]}<br>`;
+});
+
+texto += "</div>";
+
+cont.innerHTML += texto;
+
+});
+}
+
+
+
+</script>
