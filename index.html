@@ -4,8 +4,7 @@
 <meta charset="UTF-8">
 <title>Simulador PRO</title>
 
-<style>
-body{
+<style> body{
 font-family:'Segoe UI', Arial;
 margin:0;
 padding:20px;
@@ -24,7 +23,6 @@ linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
 url("https://i.pinimg.com/736x/4e/53/df/4e53df7fbfe0a967661bbd9d46393994.jpg") center/cover no-repeat;
 z-index:-1;
 }
-
 
 .container{
 max-width:1100px;
@@ -66,6 +64,46 @@ margin-top:10px;
 background:#f1f5f9;
 padding:15px;
 border-radius:12px;
+}
+
+/* 🔥 BOTÓN FLOTANTE (FIX IMPORTANTE) */
+#btnHistorial{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#2563eb;
+color:white;
+padding:12px 16px;
+border-radius:12px;
+cursor:pointer;
+z-index:1000;
+box-shadow:0 4px 10px rgba(0,0,0,0.3);
+
+/* 🔥 CLAVE PARA QUE NO SEA GIGANTE */
+width:auto;
+margin:0;
+}
+
+/* 📦 PANEL HISTORIAL */
+#panelHistorial{
+position:fixed;
+top:0;
+right:-400px;
+width:350px;
+height:100%;
+background:white;
+box-shadow:-5px 0 20px rgba(0,0,0,0.3);
+padding:20px;
+overflow-y:auto;
+transition:0.3s;
+z-index:999;
+border-top-left-radius:15px;
+border-bottom-left-radius:15px;
+}
+
+/* ACTIVO */
+#panelHistorial.activo{
+right:0;
 }
 
 li{
@@ -206,7 +244,13 @@ Calcular impuestos
 
 </div>
 </div>
+<button onclick="toggleHistorial()" id="btnHistorial">📚 Historial</button>
 
+<div id="panelHistorial">
+  <h3>Historial de pedidos</h3>
+  <div id="historialContenido"></div>
+</div>
+  
 <script>
 
 // 📞 CONTACTOS REALES
@@ -916,18 +960,18 @@ renderHistorial();
 
 function renderHistorial(){
 
-let cont = document.getElementById("historial");
+let cont = document.getElementById("historialContenido");
 if(!cont) return;
 
 let historial = JSON.parse(localStorage.getItem("historialPedidos")) || [];
 
-cont.innerHTML = "<b>Historial de pedidos:</b><br><br>";
+cont.innerHTML = "";
 
 historial.slice().reverse().forEach((pedido, i)=>{
 
 let indexOriginal = historial.length - 1 - i;
 
-let texto = `<div style="background:#fff;padding:10px;border-radius:8px;margin-bottom:10px;">
+let texto = `<div style="background:#f1f5f9;padding:10px;border-radius:8px;margin-bottom:10px;">
 <b>${pedido.fecha}</b><br>
 Vendedor: ${pedido.vendedor}<br><br>`;
 
@@ -936,10 +980,12 @@ texto += `${item.cantidad}x ${nombres[item.producto]}<br>`;
 });
 
 texto += `
+
 <button onclick="repetirPedido(${indexOriginal})" 
-style="margin-top:10px;background:#2563eb;color:white;padding:10px;border:none;border-radius:6px;cursor:pointer;width:100%;">
-🔁 Repetir pedido
+style="margin-top:8px;background:#2563eb;color:white;padding:6px 10px;border:none;border-radius:6px;cursor:pointer;width:100%;">
+Repetir pedido
 </button>
+
 </div>`;
 
 cont.innerHTML += texto;
@@ -988,5 +1034,9 @@ calcular();
 
 alert("Último pedido cargado ✅");
 }
-  
+function toggleHistorial(){
+let panel = document.getElementById("panelHistorial");
+panel.classList.toggle("activo");
+}
+
 </script>
