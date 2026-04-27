@@ -138,20 +138,17 @@ white-space:pre-line;
 display:flex;
 justify-content:space-between;
 align-items:center;
-background:white;
-margin:6px 0;
-padding:10px;
-border-radius:8px;
 }
 
-.btn-eliminar{
+.item-carrito .btn-eliminar{
+width:auto !important;
+padding:5px 10px;
+margin:0;
 background:#ef4444;
 color:white;
 border:none;
 border-radius:6px;
-padding:4px 10px;
 cursor:pointer;
-width:auto;
 }
 
 </style>
@@ -849,9 +846,9 @@ ul.innerHTML="";
 
 let extrasTexto=item.extras.length?" + "+item.extras.join(" + "):"";
 
-ul.innerHTML+=`
+ul.innerHTML += `
 <li class="item-carrito">
-  <span>${item.cantidad}x ${nombres[item.producto]}${extrasTexto} - $${item.precio}</span>
+  ${item.cantidad}x ${nombres[item.producto]}${extrasTexto} - $${item.precio}
   <button class="btn-eliminar" onclick="eliminar(${i})">X</button>
 </li>
 `;
