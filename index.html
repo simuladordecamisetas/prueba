@@ -156,6 +156,10 @@ white-space:pre-line;
 
 <label>Vendedor</label>
 <select id="vendedor" onchange="cargarTodo()"></select>
+<button onclick="toggleFavorito()" 
+style="background:#f59e0b;color:white;">
+⭐ Marcar / quitar favorito
+</button>
 
 <label>Producto</label>
 <select id="producto"></select>
@@ -619,7 +623,10 @@ for(let v in vendedores){
 if(vendedores[v].disp.includes(pais)){
 let op=document.createElement("option");
 op.value=v;
-op.textContent=v.toUpperCase();
+
+let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+op.textContent = (favoritos.includes(v) ? "⭐ " : "") + v.toUpperCase();
+
 sel.appendChild(op);
 }}
 cargarTodo();
@@ -1106,6 +1113,24 @@ if(!panel.contains(e.target) && !boton.contains(e.target)){
 panel.classList.remove("activo");
 }
 
+function toggleFavorito(){
+
+let vendedor = document.getElementById("vendedor").value;
+
+let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+
+if(favoritos.includes(vendedor)){
+favoritos = favoritos.filter(v => v !== vendedor);
+}else{
+favoritos.push(vendedor);
+}
+
+localStorage.setItem("favoritos", JSON.stringify(favoritos));
+
+// refrescar lista
+init();
+
+}
 }
 
 });
