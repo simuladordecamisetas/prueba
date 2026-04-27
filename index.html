@@ -156,10 +156,6 @@ white-space:pre-line;
 
 <label>Vendedor</label>
 <select id="vendedor" onchange="cargarTodo()"></select>
-<button onclick="toggleFavorito()" 
-style="background:#facc15;color:black;">
-⭐ Favorito
-</button>
 
 <label>Producto</label>
 <select id="producto"></select>
@@ -257,8 +253,6 @@ Calcular impuestos
 </div>
   
 <script>
-
-let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
 
 // 📞 CONTACTOS REALES
 let contactos={
@@ -617,31 +611,17 @@ ems:20
 let carritos={};
 
 function init(){
-
 let pais=document.getElementById("pais").value;
 let sel=document.getElementById("vendedor");
 sel.innerHTML="";
 
-let lista = Object.keys(vendedores);
-
-// 🔥 ordenar: favoritos primero
-lista.sort((a,b)=>{
-return (favoritos.includes(b) - favoritos.includes(a));
-});
-
-lista.forEach(v=>{
+for(let v in vendedores){
 if(vendedores[v].disp.includes(pais)){
 let op=document.createElement("option");
-
-let estrella = favoritos.includes(v) ? " ⭐" : "";
-
 op.value=v;
-op.textContent=v.toUpperCase()+estrella;
-
+op.textContent=v.toUpperCase();
 sel.appendChild(op);
-}
-});
-
+}}
 cargarTodo();
 }
 
@@ -1115,65 +1095,18 @@ renderHistorial();
 }
 document.addEventListener("click", function(e){
 
-document.addEventListener("click", function(e){
-
 let panel = document.getElementById("panelHistorial");
 let boton = document.getElementById("btnHistorial");
 
+// si el panel está abierto
 if(panel.classList.contains("activo")){
+
+// si NO clickeaste ni el panel ni el botón → cerrar
 if(!panel.contains(e.target) && !boton.contains(e.target)){
 panel.classList.remove("activo");
 }
+
 }
 
-}); // 🔥 ESTA LLAVE FALTABA
-// ⭐ FAVORITOS
-function toggleFavorito(){
-
-let vendedor = document.getElementById("vendedor").value;
-
-if(!vendedor) return;
-
-if(favoritos.includes(vendedor)){
-favoritos = favoritos.filter(v=>v !== vendedor);
-}else{
-favoritos.push(vendedor);
-}
-
-localStorage.setItem("favoritos", JSON.stringify(favoritos));
-
-cargarVendedores();
-cargarTodo();
-}
-
-function cargarVendedores(){
-
-let pais=document.getElementById("pais").value;
-let sel=document.getElementById("vendedor");
-
-let actual = sel.value;
-
-sel.innerHTML="";
-
-let lista = Object.keys(vendedores).sort((a,b)=>{
-return favoritos.includes(b) - favoritos.includes(a);
 });
-
-lista.forEach(v=>{
-if(vendedores[v].disp.includes(pais)){
-
-let op=document.createElement("option");
-
-let estrella = favoritos.includes(v) ? " ⭐" : "";
-
-op.value=v;
-op.textContent=v.toUpperCase()+estrella;
-
-sel.appendChild(op);
-}
-});
-
-if(actual) sel.value = actual;
-}
-
 </script>
