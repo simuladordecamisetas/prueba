@@ -629,18 +629,40 @@ ems:20
 let carritos={};
 
 function init(){
-let pais=document.getElementById("pais").value;
-let sel=document.getElementById("vendedor");
-sel.innerHTML="";
 
-for(let v in vendedores){
-if(vendedores[v].disp.includes(pais)){
-let op=document.createElement("option");
-op.value=v;
-op.textContent=v.toUpperCase();
-sel.appendChild(op);
-}}
-cargarTodo();
+  // 🔁 intentar recuperar selección guardada
+  let guardado = JSON.parse(localStorage.getItem("ultimaSeleccion"));
+
+  // si hay algo guardado, usar ese país
+  if(guardado && guardado.pais){
+    document.getElementById("pais").value = guardado.pais;
+  }
+
+  let pais = document.getElementById("pais").value;
+  let sel = document.getElementById("vendedor");
+  sel.innerHTML = "";
+
+  // cargar vendedores según país
+  for(let v in vendedores){
+    if(vendedores[v].disp.includes(pais)){
+      let op = document.createElement("option");
+      op.value = v;
+      op.textContent = v.toUpperCase();
+      sel.appendChild(op);
+    }
+  }
+
+  // 🔁 recuperar vendedor
+  if(guardado && guardado.vendedor){
+    document.getElementById("vendedor").value = guardado.vendedor;
+  }
+
+  cargarTodo();
+
+  // 🔁 recuperar producto (después de cargarTodo)
+  if(guardado && guardado.producto){
+    document.getElementById("producto").value = guardado.producto;
+  }
 }
 
 let nombresCatalogos={
@@ -1127,6 +1149,20 @@ if(panel.classList.contains("activo")){
 // si NO clickeaste ni el panel ni el botón → cerrar
 if(!panel.contains(e.target) && !boton.contains(e.target)){
 panel.classList.remove("activo");
+}
+
+document.getElementById("pais").addEventListener("change", guardarSeleccion);
+document.getElementById("vendedor").addEventListener("change", guardarSeleccion);
+document.getElementById("producto").addEventListener("change", guardarSeleccion);
+
+function guardarSeleccion(){
+  let data = {
+    pais: document.getElementById("pais").value,
+    vendedor: document.getElementById("vendedor").value,
+    producto: document.getElementById("producto").value
+  };
+
+  localStorage.setItem("ultimaSeleccion", JSON.stringify(data));
 }
 
 }
