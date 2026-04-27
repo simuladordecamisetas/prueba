@@ -136,10 +136,18 @@ white-space:pre-line;
 <div class="card">
 <h3>Carrito</h3>
 <ul id="carrito"></ul>
+
 <button class="btn-vaciar" onclick="vaciar()">Vaciar</button>
+
 <div class="total" id="total"></div>
 
-<!-- 📚 HISTORIAL (PEGAR ACÁ) -->
+<!-- 🔁 BOTÓN NUEVO -->
+<button onclick="repetirUltimoPedido()" 
+style="background:#2563eb;color:white;">
+Repetir último pedido
+</button>
+
+<!-- 📚 HISTORIAL -->
 <div id="historial" style="margin-top:15px;"></div>
 
 <div style="margin-top:10px; text-align:center;">
@@ -956,6 +964,29 @@ render();
 calcular();
 
 alert("Pedido cargado nuevamente ✅");
+}
+
+function repetirUltimoPedido(){
+
+let historial = JSON.parse(localStorage.getItem("historialPedidos")) || [];
+
+if(historial.length === 0){
+alert("No hay pedidos en el historial");
+return;
+}
+
+let pedido = historial[historial.length - 1];
+
+carritos[pedido.vendedor] = JSON.parse(JSON.stringify(pedido.items));
+
+document.getElementById("vendedor").value = pedido.vendedor;
+
+init();
+cargarTodo();
+render();
+calcular();
+
+alert("Último pedido cargado ✅");
 }
   
 </script>
