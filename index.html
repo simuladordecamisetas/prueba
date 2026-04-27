@@ -136,33 +136,41 @@ white-space:pre-line;
 <div class="card">
 <h3>Carrito</h3>
 <ul id="carrito"></ul>
+
 <button class="btn-vaciar" onclick="vaciar()">Vaciar</button>
+
 <div class="total" id="total"></div>
 
 <div style="margin-top:10px; text-align:center;">
 
-<button onclick="verCatalogo()" 
-style="background:#0ea5e9;color:white;margin-top:10px;padding:8px 14px;border-radius:8px;border:none;cursor:pointer;">
-Ver catálogo
-</button>
-  
-<button onclick="contactar()" 
-    style="background:#16a34a; color:white; margin-top:10px; 
-           display:flex; align-items:center; justify-content:center; 
-           gap:8px; padding:10px 15px; border:none; border-radius:5px; 
-           cursor:pointer; margin-left:auto; margin-right:auto;">
-    
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
-         alt="WhatsApp" 
-         style="width:20px; height:20px;">
-    
-    Contactar vendedor
-    
+  <!-- 📂 CATÁLOGO -->
+  <button onclick="verCatalogo()" 
+  style="background:#0ea5e9;color:white;margin-top:10px;padding:8px 14px;border-radius:8px;border:none;cursor:pointer;">
+  Ver catálogo
   </button>
+  
+  <!-- 📞 CONTACTAR -->
+  <button onclick="contactar()" 
+      style="background:#16a34a; color:white; margin-top:10px; 
+             display:flex; align-items:center; justify-content:center; 
+             gap:8px; padding:10px 15px; border:none; border-radius:5px; 
+             cursor:pointer; margin-left:auto; margin-right:auto;">
+      
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
+           alt="WhatsApp" 
+           style="width:20px; height:20px;">
+      
+      Contactar vendedor
+      
+  </button>
+
+</div> <!-- 🔥 ESTE DIV TE FALTABA -->
+
+<!-- 📦 DECLARACIÓN -->
 <div id="declaracion" style="display:none;margin-top:15px;background:#fff3cd;padding:12px;border-radius:10px;">
 
 <b>Simulación Declaración Argentina 🇦🇷</b><br><br>
-<!-- 👇 AGREGAR ESTO -->
+
 <div id="preciosDeclarados"></div>
 
 <br><br>
