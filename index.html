@@ -1132,9 +1132,9 @@ panel.classList.remove("activo");
 
 }
 
-}); // 🔥 ACA CIERRA EL CLICK
+}); // 🔥 CIERRA EL CLICK
 
-// 💱 COTIZACIÓN AUTOMÁTICA (AFUERA)
+// 💱 COTIZACIÓN AUTOMÁTICA
 
 let inputCotizacion = document.getElementById("cotizacion");
 
@@ -1147,8 +1147,7 @@ localStorage.getItem("cotizacion") || 1430;
 // guardar cuando cambia
 inputCotizacion.addEventListener("input", function(){
 localStorage.setItem("cotizacion", this.value);
+});
 
 }
-
-});
 </script>
