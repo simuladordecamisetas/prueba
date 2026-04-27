@@ -1116,6 +1116,7 @@ localStorage.removeItem("historialPedidos");
 renderHistorial();
 
 }
+
 document.addEventListener("click", function(e){
 
 let panel = document.getElementById("panelHistorial");
@@ -1128,6 +1129,25 @@ if(panel.classList.contains("activo")){
 if(!panel.contains(e.target) && !boton.contains(e.target)){
 panel.classList.remove("activo");
 }
+
+}
+
+}); // 🔥 ACA CIERRA EL CLICK
+
+// 💱 COTIZACIÓN AUTOMÁTICA (AFUERA)
+
+let inputCotizacion = document.getElementById("cotizacion");
+
+if(inputCotizacion){
+
+// cargar al iniciar
+inputCotizacion.value =
+localStorage.getItem("cotizacion") || 1430;
+
+// guardar cuando cambia
+inputCotizacion.addEventListener("input", function(){
+localStorage.setItem("cotizacion", this.value);
+});
 
 }
 
