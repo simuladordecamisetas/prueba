@@ -900,9 +900,33 @@ Envío (${tipo==="ems"?"EMS":"Normal"}): $${envio}
 TOTAL: $${subtotal+envio}`;
 }
 
-document.getElementById("tipoEnvio").addEventListener("change",calcular);
+document.getElementById("tipoEnvio").addEventListener("change", calcular);
 
-init();
+// 🔁 RESTAURAR PAÍS Y VENDEDOR
+
+let paisGuardado = localStorage.getItem("pais");
+if(paisGuardado){
+  document.getElementById("pais").value = paisGuardado;
+}
+
+init(); // 🔥 carga vendedores según país
+
+let vendedorGuardado = localStorage.getItem("vendedor");
+if(vendedorGuardado){
+  document.getElementById("vendedor").value = vendedorGuardado;
+  cargarTodo();
+}
+
+// 💾 GUARDAR CUANDO CAMBIAN
+
+document.getElementById("pais").addEventListener("change", function(){
+  localStorage.setItem("pais", this.value);
+});
+
+document.getElementById("vendedor").addEventListener("change", function(){
+  localStorage.setItem("vendedor", this.value);
+});
+
 renderHistorial();
 
 function calcularDeclaracion(){
@@ -1150,4 +1174,15 @@ localStorage.setItem("cotizacion", this.value);
 });
 
 }
+
+// 🌎 GUARDAR PAÍS
+document.getElementById("pais").addEventListener("change", function(){
+localStorage.setItem("pais", this.value);
+});
+
+// 🧑‍💼 GUARDAR VENDEDOR
+document.getElementById("vendedor").addEventListener("change", function(){
+localStorage.setItem("vendedor", this.value);
+});
+
 </script>
