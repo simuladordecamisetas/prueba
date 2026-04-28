@@ -1018,7 +1018,8 @@ vendedor,
 items: JSON.parse(JSON.stringify(cart)),
 envio,
 total,
-tiempo
+tiempo,
+tipoEnvio: tipo // 👈 AGREGAR ESTO
 });
 
 localStorage.setItem("historialPedidos", JSON.stringify(historial));
@@ -1058,20 +1059,25 @@ pedido.items.forEach(item=>{
 texto += `${item.cantidad}x ${nombres[item.producto]} - $${item.precio}<br>`;
 });
 
-// 🔥 ENVÍO (fallback para viejos)
+// 🔥 ENVÍO
 let envio = pedido.envio ?? 0;
 
-// 🔥 TOTAL (fallback para viejos)
+// 🔥 TOTAL
 let total = pedido.total ?? (pedido.items.reduce((a,b)=>a+b.precio,0) + envio);
 
 // 🔥 TIEMPO
 let tiempo = pedido.tiempo || "No definido";
 
+// 🔥 TIPO ENVÍO
+let tipo = pedido.tipoEnvio || "normal";
+let textoEnvio = tipo === "ems" ? "Envío (EMS)" : "Envío";
+let iconoTiempo = tipo === "ems" ? "🚀" : "📦";
+
 // 📦 MOSTRAR
 texto += `
 <br>
-Envío: $${envio}<br>
-Entrega estimada: ${tiempo}<br>
+${textoEnvio}: $${envio}<br>
+Entrega estimada: ${iconoTiempo} ${tiempo}<br>
 <b>Total: $${total}</b>
 `;
 
