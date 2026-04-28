@@ -1069,14 +1069,14 @@ let total = pedido.total ?? (pedido.items.reduce((a,b)=>a+b.precio,0) + envio);
 let tiempo = pedido.tiempo || "No definido";
 
 // 🔥 TIPO ENVÍO
+let tiempo = pedido.tiempo || "No definido";
+
 let tipo = pedido.tipoEnvio || "normal";
-let textoEnvio = tipo === "ems" ? "Envío (EMS)" : "Envío";
 let iconoTiempo = tipo === "ems" ? "🚀" : "📦";
 
-// 📦 MOSTRAR
 texto += `
 <br>
-${textoEnvio}: $${envio}<br>
+Envío: $${envio}<br>
 Entrega estimada: ${iconoTiempo} ${tiempo}<br>
 <b>Total: $${total}</b>
 `;
@@ -1202,22 +1202,18 @@ function calcularTiempoEnvio(){
 let pais = document.getElementById("pais").value;
 let tipo = document.getElementById("tipoEnvio")?.value || "normal";
 
-// 🇦🇷 Argentina
 if(pais === "arg"){
-  return tipo === "ems" ? "🚀20–35 días" : "📦35–60 días";
+  return tipo === "ems" ? "20–35 días" : "35–60 días";
 }
 
-// 🇨🇴 🇵🇪 🇨🇱
 if(pais === "col" || pais === "per"){
-  return tipo === "ems" ? "🚀15–25 días" : "📦25–35 días";
+  return tipo === "ems" ? "15–25 días" : "25–35 días";
 }
 
-// 🌎 Europa / USA / México
 if(pais === "otro"){
-  return tipo === "ems" ? "🚀7–12 días" : "📦10–15 días";
+  return tipo === "ems" ? "7–12 días" : "10–15 días";
 }
 
-// default
 return "25–35 días";
 }
 
