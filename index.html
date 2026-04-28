@@ -1036,7 +1036,7 @@ let historial = JSON.parse(localStorage.getItem("historialPedidos")) || [];
 
 cont.innerHTML = "";
 
-// 🔥 BOTÓN VACIAR HISTORIAL
+// 🔥 BOTÓN VACIAR
 if(historial.length > 0){
 cont.innerHTML += `
 <button onclick="vaciarHistorial()"
@@ -1059,25 +1059,21 @@ pedido.items.forEach(item=>{
 texto += `${item.cantidad}x ${nombres[item.producto]} - $${item.precio}<br>`;
 });
 
-// 🔥 ENVÍO
+// 🔥 DATOS
 let envio = pedido.envio ?? 0;
-
-// 🔥 TOTAL
 let total = pedido.total ?? (pedido.items.reduce((a,b)=>a+b.precio,0) + envio);
-
-// 🔥 TIEMPO
 let tiempo = pedido.tiempo || "No definido";
-
-// 🔥 TIPO ENVÍO
-let tiempo = pedido.tiempo || "No definido";
-
 let tipo = pedido.tipoEnvio || "normal";
-let iconoTiempo = tipo === "ems" ? "🚀" : "📦";
 
+// 🚀 ICONO SEGÚN ENVÍO
+let icono = tipo === "ems" ? "🚀" : "📦";
+let textoEnvio = tipo === "ems" ? "Envío (EMS)" : "Envío";
+
+// 📦 MOSTRAR
 texto += `
 <br>
-Envío: $${envio}<br>
-Entrega estimada: ${iconoTiempo} ${tiempo}<br>
+${textoEnvio}: $${envio}<br>
+Entrega estimada: ${icono} ${tiempo}<br>
 <b>Total: $${total}</b>
 `;
 
@@ -1095,7 +1091,6 @@ cont.innerHTML += texto;
 });
 
 }
-
 function repetirPedido(index){
 
 let historial = JSON.parse(localStorage.getItem("historialPedidos")) || [];
