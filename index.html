@@ -1110,27 +1110,30 @@ calcular();
 alert("Pedido cargado nuevamente ✅");
 }
 
-function repetirUltimoPedido(){
+function repetirPedido(index){
 
 let historial = JSON.parse(localStorage.getItem("historialPedidos")) || [];
+let pedido = historial[index];
 
-if(historial.length === 0){
-alert("No hay pedidos en el historial");
-return;
-}
+if(!pedido) return;
 
-let pedido = historial[historial.length - 1];
+// 🔁 cambiar país si querés que sea exacto
+// (opcional pero recomendado)
+let paisActual = document.getElementById("pais").value;
 
+// 🛒 cargar carrito
 carritos[pedido.vendedor] = JSON.parse(JSON.stringify(pedido.items));
+
+// 🔥 IMPORTANTE ORDEN CORRECTO
+init(); // primero recarga vendedores
 
 document.getElementById("vendedor").value = pedido.vendedor;
 
-init();
 cargarTodo();
 render();
 calcular();
 
-alert("Último pedido cargado ✅");
+alert("Pedido cargado nuevamente ✅");
 }
 function toggleHistorial(){
 let panel = document.getElementById("panelHistorial");
