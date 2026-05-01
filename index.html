@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>PRUEBA</title>
+PRUEBA
 
 <style>  body{
 font-family:'Segoe UI', Arial;
@@ -277,7 +277,7 @@ let contactos={
 king:"https://wa.me/8617724213565",
 huang:"https://t.me/+8613535386151",
 meiou:"https://wa.me/8615975452336",
-pinhui:"https://wa.me/8615812759099",
+pinhui:"https://wa.me/8613416127767",
 annie1:"https://wa.me/8613620452224",
 annie2:"https://wa.me/8613229555665",
 bond:"https://wa.me/8615361409693",
@@ -1094,22 +1094,15 @@ cont.innerHTML += texto;
 function repetirPedido(index){
 
 let historial = JSON.parse(localStorage.getItem("historialPedidos")) || [];
-let pedido = historial[index];
+
+let pedido = historial[index]; // 🔥 FIX ACA
 
 if(!pedido) return;
 
-// 🔁 cambiar país si querés que sea exacto
-// (opcional pero recomendado)
-let paisActual = document.getElementById("pais").value;
-
-// 🛒 cargar carrito
 carritos[pedido.vendedor] = JSON.parse(JSON.stringify(pedido.items));
 
-// 🔥 IMPORTANTE ORDEN CORRECTO
-init(); // primero recarga vendedores
-
 document.getElementById("vendedor").value = pedido.vendedor;
-
+init();
 cargarTodo();
 render();
 calcular();
@@ -1219,4 +1212,4 @@ if(pais === "otro"){
 return "25–35 días";
 }
 
-</script>
+  </script>
