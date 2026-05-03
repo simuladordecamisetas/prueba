@@ -437,6 +437,12 @@ link = contactos[vendedor];
 
 window.open(link+"?text="+encodeURIComponent(mensaje),"_blank");
 
+// 🧹 BORRAR CARRITO DESPUÉS DE CONTACTAR
+carritos[vendedor] = [];
+
+render();
+calcular();
+generarInputsDeclaracion();
 }
   
 let nombres={
