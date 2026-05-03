@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+QUEDO ASI <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -151,6 +151,47 @@ border-radius:6px;
 cursor:pointer;
 }
 
+<style>
+
+body{
+  font-family:'Segoe UI', Arial;
+  margin:0;
+  padding:20px;
+  position:relative;
+}
+
+/* ...todo tu CSS actual... */
+
+/* 🔥 ESTADÍSTICAS */
+#statsBox{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  background:#e5e7eb;
+  padding:15px;
+  border-radius:20px;
+  margin-bottom:15px;
+}
+
+.stat{
+  border:3px solid #7f1d1d;
+  border-radius:15px;
+  padding:10px;
+  text-align:center;
+  background:white;
+}
+
+.stat span{
+  display:block;
+  font-size:12px;
+  color:#444;
+}
+
+.stat b{
+  font-size:16px;
+  color:#7f1d1d;
+}
+
 </style>
 
 </head>
@@ -267,9 +308,36 @@ Calcular impuestos
 
 <div id="panelHistorial">
   <h3>Historial de pedidos</h3>
+
+  <!-- 📊 ESTADÍSTICAS -->
+  <div id="statsBox">
+
+    <div class="stat">
+      <span>TOP</span>
+      <b id="statTop">-</b>
+    </div>
+
+    <div class="stat">
+      <span>MAS COMPRADO</span>
+      <b id="statProducto">-</b>
+    </div>
+
+    <div class="stat">
+      <span>PEDIDOS</span>
+      <b id="statPedidos">0</b>
+    </div>
+
+    <div class="stat">
+      <span>TOTAL</span>
+      <b id="statTotal">$0</b>
+    </div>
+
+  </div>
+
+  <!-- 📚 HISTORIAL -->
   <div id="historialContenido"></div>
+
 </div>
-  
 <script>
 
 // 📞 CONTACTOS REALES
@@ -1090,26 +1158,9 @@ cont.innerHTML += texto;
 
 });
 
+calcularEstadisticas();
+
 }
-function repetirPedido(index){
-
-let historial = JSON.parse(localStorage.getItem("historialPedidos")) || [];
-
-let pedido = historial[index]; // 🔥 FIX ACA
-
-if(!pedido) return;
-
-carritos[pedido.vendedor] = JSON.parse(JSON.stringify(pedido.items));
-
-document.getElementById("vendedor").value = pedido.vendedor;
-init();
-cargarTodo();
-render();
-calcular();
-
-alert("Pedido cargado nuevamente ✅");
-}
-
 function repetirPedido(index){
 
 let historial = JSON.parse(localStorage.getItem("historialPedidos")) || [];
@@ -1117,17 +1168,13 @@ let pedido = historial[index];
 
 if(!pedido) return;
 
-// 🔁 cambiar país si querés que sea exacto
-// (opcional pero recomendado)
-let paisActual = document.getElementById("pais").value;
-
 // 🛒 cargar carrito
 carritos[pedido.vendedor] = JSON.parse(JSON.stringify(pedido.items));
 
-// 🔥 IMPORTANTE ORDEN CORRECTO
-init(); // primero recarga vendedores
+// 🔥 ORDEN CLAVE (ESTO ES LO IMPORTANTE)
+init(); // 1. recarga vendedores
 
-document.getElementById("vendedor").value = pedido.vendedor;
+document.getElementById("vendedor").value = pedido.vendedor; // 2. cambia al correcto
 
 cargarTodo();
 render();
@@ -1213,6 +1260,44 @@ if(pais === "otro"){
 }
 
 return "25–35 días";
+}
+
+function calcularEstadisticas(){
+
+let historial = JSON.parse(localStorage.getItem("historialPedidos")) || [];
+
+if(historial.length === 0){
+  document.getElementById("statTop").innerText = "-";
+  document.getElementById("statProducto").innerText = "-";
+  document.getElementById("statPedidos").innerText = "0";
+  document.getElementById("statTotal").innerText = "$0";
+  return;
+}
+
+let total = 0;
+let vendedores = {};
+let productos = {};
+
+historial.forEach(p=>{
+
+  total += p.total || 0;
+
+  vendedores[p.vendedor] = (vendedores[p.vendedor] || 0) + 1;
+
+  p.items.forEach(i=>{
+    productos[i.producto] = (productos[i.producto] || 0) + i.cantidad;
+  });
+
+});
+
+let topVendedor = Object.keys(vendedores).reduce((a,b)=>vendedores[a]>vendedores[b]?a:b);
+let topProducto = Object.keys(productos).reduce((a,b)=>productos[a]>productos[b]?a:b);
+
+// 👉 pintar UI
+document.getElementById("statTop").innerText = topVendedor.toUpperCase();
+document.getElementById("statProducto").innerText = nombres[topProducto];
+document.getElementById("statPedidos").innerText = historial.length;
+document.getElementById("statTotal").innerText = "$" + total;
 }
 
   </script>
