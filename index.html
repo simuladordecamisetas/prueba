@@ -43,22 +43,20 @@ gap:20px;
 
 select,input{
 width:100%;
-padding:14px;
-margin:10px 0;
-border-radius:12px;
+padding:12px;
+margin:8px 0;
+border-radius:10px;
 border:1px solid #ccc;
-font-size:16px;
 }
 
 button{
 width:100%;
-padding:16px; /* antes 12 */
+padding:12px;
 border:none;
-border-radius:12px;
+border-radius:10px;
 font-weight:bold;
 cursor:pointer;
-margin-top:12px;
-font-size:16px; /* 🔥 mejor lectura */
+margin-top:10px;
 }
 
 .btn-agregar{background:#2563eb;color:white;}
@@ -91,14 +89,17 @@ box-shadow:0 4px 12px rgba(0,0,0,0.3);
 #panelHistorial{
 position:fixed;
 top:0;
-right:-100%;
-width:100%;
+right:-400px;
+width:350px;
 height:100%;
-background:#f9fafb;
-padding:15px;
+background:white;
+box-shadow:-5px 0 20px rgba(0,0,0,0.3);
+padding:20px;
 overflow-y:auto;
 transition:0.3s;
 z-index:999;
+border-top-left-radius:15px;
+border-bottom-left-radius:15px;
 }
 
 #panelHistorial.activo{
@@ -186,18 +187,6 @@ margin-bottom:4px;
 .stat b{
 font-size:18px;
 color:#2563eb;
-}
-
-@media (max-width: 768px){
-
-  .grid{
-    grid-template-columns:1fr; /* 🔥 una sola columna */
-  }
-
-  .container{
-    padding:15px;
-  }
-
 }
 
 </style>
@@ -1137,17 +1126,7 @@ cont.innerHTML = "";
 if(historial.length > 0){
 cont.innerHTML += `
 <button onclick="vaciarHistorial()"
-style="
-margin-bottom:12px;
-background:#ef4444;
-color:white;
-padding:12px;
-border:none;
-border-radius:12px;
-cursor:pointer;
-width:100%;
-font-size:15px;
-">
+style="margin-bottom:10px;background:#ef4444;color:white;padding:8px;border:none;border-radius:8px;cursor:pointer;width:100%;">
 Vaciar historial
 </button>
 `;
@@ -1157,24 +1136,13 @@ historial.slice().reverse().forEach((pedido, i)=>{
 
 let indexOriginal = historial.length - 1 - i;
 
-let texto = `<div style="
-background:white;
-padding:14px;
-border-radius:16px;
-margin-bottom:14px;
-box-shadow:0 6px 16px rgba(0,0,0,0.12);
-border-left:5px solid #2563eb;
-">
-
-<b style="font-size:14px;">${pedido.fecha}</b><br>
-<span style="font-size:13px;color:#555;">Vendedor: ${pedido.vendedor}</span><br><br>`;
+let texto = `<div style="background:#f1f5f9;padding:10px;border-radius:8px;margin-bottom:10px;">
+<b>${pedido.fecha}</b><br>
+Vendedor: ${pedido.vendedor}<br><br>`;
 
 // 🛒 ITEMS
 pedido.items.forEach(item=>{
-texto += `
-<span style="font-size:14px;">
-${item.cantidad}x ${nombres[item.producto]} - $${item.precio}
-</span><br>`;
+texto += `${item.cantidad}x ${nombres[item.producto]} - $${item.precio}<br>`;
 });
 
 // 🔥 DATOS
@@ -1190,29 +1158,16 @@ let textoEnvio = tipo === "ems" ? "Envío (EMS)" : "Envío";
 // 📦 MOSTRAR
 texto += `
 <br>
-<span style="font-size:13px;color:#444;">
 ${textoEnvio}: $${envio}<br>
-Entrega: ${icono} ${tiempo}
-</span><br>
-
-<b style="font-size:16px;">Total: $${total}</b>
+Entrega estimada: ${icono} ${tiempo}<br>
+<b>Total: $${total}</b>
 `;
 
 // 🔁 BOTÓN
 texto += `
 <button onclick="repetirPedido(${indexOriginal})"
-style="
-margin-top:10px;
-background:#2563eb;
-color:white;
-padding:10px;
-border:none;
-border-radius:10px;
-font-size:14px;
-cursor:pointer;
-width:100%;
-">
-🔁 Repetir pedido
+style="margin-top:8px;background:#2563eb;color:white;padding:6px 10px;border:none;border-radius:6px;cursor:pointer;width:100%;">
+Repetir pedido
 </button>
 
 </div>`;
@@ -1221,7 +1176,6 @@ cont.innerHTML += texto;
 
 });
 
-// 📊 STATS
 calcularEstadisticas();
 
 }
