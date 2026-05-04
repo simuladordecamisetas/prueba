@@ -225,6 +225,9 @@ color:#2563eb;
   <option value="M">M</option>
   <option value="L">L</option>
   <option value="XL">XL</option>
+  <option value="2XL">2XL (+$1)</option>
+  <option value="3XL">3XL (+$1)</option>
+  <option value="4XL">4XL (+$1)</option>
 </select>
   
 <div id="extras"></div>
@@ -817,13 +820,6 @@ extras.innerHTML+=`Parches (+$${v.ext.parche} c/u): <input id="parcheCantidad" t
 // personalizacion
 extras.innerHTML+=`Personalización (+$${v.ext.personalizacion}): <input id="personalizacionTexto" placeholder="Ej: Messi 10"><br>`;
 
-// talles
-["talle2XL","talle3XL","talle4XL"].forEach(e=>{
-if(v.ext[e]){
-extras.innerHTML+=`<label><input type="checkbox" value="${e}"> ${e.replace("talle","")} (+$${v.ext[e]})</label><br>`;
-}
-});
-
 // ENVIO DINAMICO
 let envioSelect=document.getElementById("tipoEnvio");
 
@@ -887,24 +883,33 @@ let base=productos[producto];
 let extraTotal=0;
 let extrasSel=[];
 
-// parches
-let p=parseInt(document.getElementById("parcheCantidad").value)||0;
-if(p){extraTotal+=p*v.ext.parche;extrasSel.push(p+" parches");}
-
-// personalizacion
-let txt=document.getElementById("personalizacionTexto").value.trim();
-if(txt){extraTotal+=v.ext.personalizacion;extrasSel.push(txt);}
-
-// talles
-document.querySelectorAll("#extras input[type=checkbox]:checked").forEach(c=>{
-extraTotal+=v.ext[c.value];
-extrasSel.push(c.value.replace("talle",""));
-});
-
-let precio=(base+extraTotal)*cantidad;
-
+// 🔥 TALLE
 let talle = document.getElementById("talle").value;
 
+// 💰 SUMA AUTOMÁTICA POR TALLE GRANDE
+if(talle === "2XL" || talle === "3XL" || talle === "4XL"){
+  extraTotal += 1;
+  extrasSel.push("Talle grande +$1"); // opcional
+}
+
+// 🧩 PARCHES
+let p=parseInt(document.getElementById("parcheCantidad").value)||0;
+if(p){
+  extraTotal+=p*v.ext.parche;
+  extrasSel.push(p+" parches");
+}
+
+// ✍ PERSONALIZACIÓN
+let txt=document.getElementById("personalizacionTexto").value.trim();
+if(txt){
+  extraTotal+=v.ext.personalizacion;
+  extrasSel.push(txt);
+}
+
+// 💰 PRECIO FINAL
+let precio=(base+extraTotal)*cantidad;
+
+// 🛒 GUARDAR
 carritos[vendedor].push({
   producto,
   cantidad,
