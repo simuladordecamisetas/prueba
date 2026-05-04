@@ -219,17 +219,6 @@ color:#2563eb;
 <label>Cantidad</label>
 <input type="number" id="cantidad" value="1" min="1">
 
-<label>Talle</label>
-<select id="talle">
-  <option value="S">S</option>
-  <option value="M">M</option>
-  <option value="L">L</option>
-  <option value="XL">XL</option>
-  <option value="2XL">2XL (+$1)</option>
-  <option value="3XL">3XL (+$1)</option>
-  <option value="4XL">4XL (+$1)</option>
-</select>
-  
 <div id="extras"></div>
 
 <label style="font-weight:bold;">Tipo de envío</label>
@@ -404,7 +393,7 @@ let mensaje="Hola, quiero consultar por:\n\n";
 
 carrito.forEach(item=>{
 
-let size = item.talle || "-";
+let size=" ";
 let version=nombres[item.producto] ?? item.producto;
 
 let nombreNumero="";
@@ -820,6 +809,13 @@ extras.innerHTML+=`Parches (+$${v.ext.parche} c/u): <input id="parcheCantidad" t
 // personalizacion
 extras.innerHTML+=`Personalización (+$${v.ext.personalizacion}): <input id="personalizacionTexto" placeholder="Ej: Messi 10"><br>`;
 
+// talles
+["talle2XL","talle3XL","talle4XL"].forEach(e=>{
+if(v.ext[e]){
+extras.innerHTML+=`<label><input type="checkbox" value="${e}"> ${e.replace("talle","")} (+$${v.ext[e]})</label><br>`;
+}
+});
+
 // ENVIO DINAMICO
 let envioSelect=document.getElementById("tipoEnvio");
 
@@ -883,40 +879,23 @@ let base=productos[producto];
 let extraTotal=0;
 let extrasSel=[];
 
-// 🔥 TALLE
-let talle = document.getElementById("talle").value;
-
-// 💰 SUMA AUTOMÁTICA POR TALLE GRANDE
-if(talle === "2XL" || talle === "3XL" || talle === "4XL"){
-  extraTotal += 1;
-  extrasSel.push("Talle grande +$1"); // opcional
-}
-
-// 🧩 PARCHES
+// parches
 let p=parseInt(document.getElementById("parcheCantidad").value)||0;
-if(p){
-  extraTotal+=p*v.ext.parche;
-  extrasSel.push(p+" parches");
-}
+if(p){extraTotal+=p*v.ext.parche;extrasSel.push(p+" parches");}
 
-// ✍ PERSONALIZACIÓN
+// personalizacion
 let txt=document.getElementById("personalizacionTexto").value.trim();
-if(txt){
-  extraTotal+=v.ext.personalizacion;
-  extrasSel.push(txt);
-}
+if(txt){extraTotal+=v.ext.personalizacion;extrasSel.push(txt);}
 
-// 💰 PRECIO FINAL
+// talles
+document.querySelectorAll("#extras input[type=checkbox]:checked").forEach(c=>{
+extraTotal+=v.ext[c.value];
+extrasSel.push(c.value.replace("talle",""));
+});
+
 let precio=(base+extraTotal)*cantidad;
 
-// 🛒 GUARDAR
-carritos[vendedor].push({
-  producto,
-  cantidad,
-  precio,
-  extras: extrasSel,
-  talle: talle
-});
+carritos[vendedor].push({producto,cantidad,precio,extras:extrasSel});
 
 render();
 calcular();
@@ -930,14 +909,12 @@ ul.innerHTML = "";
 
 (carritos[vendedor] || []).forEach((item, i) => {
 
-let extrasTexto = (item.extras && item.extras.length)
-  ? " + " + item.extras.join(" + ")
-  : "";
+let extrasTexto = item.extras.length ? " + " + item.extras.join(" + ") : "";
 
 ul.innerHTML += `
 <li class="item-carrito">
 <span>
-${item.cantidad}x ${nombres[item.producto]} (Talle: ${item.talle || "—"})${extrasTexto}
+${item.cantidad}x ${nombres[item.producto]}${extrasTexto} - $${item.precio}
 </span>
 <button class="btn-eliminar" onclick="eliminar(${i})">X</button>
 </li>
