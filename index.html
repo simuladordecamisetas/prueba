@@ -795,27 +795,7 @@ function cargarTodo(){
 let pais=document.getElementById("pais").value;
 let vendedor=document.getElementById("vendedor").value;
 let v=vendedores[vendedor];
-let talleSelect = document.getElementById("talle");
 
-talleSelect.innerHTML = `
-<option value="S">S</option>
-<option value="M">M</option>
-<option value="L">L</option>
-<option value="XL">XL</option>
-`;
-
-// 🔥 solo si existen en ese vendedor
-if(v.ext.talle2XL){
-  talleSelect.innerHTML += `<option value="2XL">2XL (+$${v.ext.talle2XL})</option>`;
-}
-
-if(v.ext.talle3XL){
-  talleSelect.innerHTML += `<option value="3XL">3XL (+$${v.ext.talle3XL})</option>`;
-}
-
-if(v.ext.talle4XL){
-  talleSelect.innerHTML += `<option value="4XL">4XL (+$${v.ext.talle4XL})</option>`;
-}
 let productos=v.prod[pais]||v.prod.otro;
 
 let prodSel=document.getElementById("producto");
@@ -836,6 +816,13 @@ extras.innerHTML+=`Parches (+$${v.ext.parche} c/u): <input id="parcheCantidad" t
 
 // personalizacion
 extras.innerHTML+=`Personalización (+$${v.ext.personalizacion}): <input id="personalizacionTexto" placeholder="Ej: Messi 10"><br>`;
+
+// talles
+["talle2XL","talle3XL","talle4XL"].forEach(e=>{
+if(v.ext[e]){
+extras.innerHTML+=`<label><input type="checkbox" value="${e}"> ${e.replace("talle","")} (+$${v.ext[e]})</label><br>`;
+}
+});
 
 // ENVIO DINAMICO
 let envioSelect=document.getElementById("tipoEnvio");
@@ -899,18 +886,6 @@ let productos=v.prod[pais]||v.prod.otro;
 let base=productos[producto];
 let extraTotal=0;
 let extrasSel=[];
-let talle = document.getElementById("talle").value;
-
-// 🔥 sumar extra según talle
-if(talle === "2XL" && v.ext.talle2XL){
-  extraTotal += v.ext.talle2XL;
-}
-if(talle === "3XL" && v.ext.talle3XL){
-  extraTotal += v.ext.talle3XL;
-}
-if(talle === "4XL" && v.ext.talle4XL){
-  extraTotal += v.ext.talle4XL;
-}
 
 // parches
 let p=parseInt(document.getElementById("parcheCantidad").value)||0;
@@ -957,7 +932,7 @@ let extrasTexto = (item.extras && item.extras.length)
 ul.innerHTML += `
 <li class="item-carrito">
 <span>
-${item.cantidad}x ${nombres[item.producto]} (Talle: ${item.talle || "—"})
+${item.cantidad}x ${nombres[item.producto]} (Talle: ${item.talle || "—"})${extrasTexto}
 </span>
 <button class="btn-eliminar" onclick="eliminar(${i})">X</button>
 </li>
