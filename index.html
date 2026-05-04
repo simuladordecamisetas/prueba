@@ -327,22 +327,32 @@ background:#1e293b;
 color:white;
 }
 
-/* 🔥 FIX DECLARACIÓN EN DARK */
+/* 💎 DECLARACIÓN MODO DARK PRO */
 body.dark #declaracion{
-background:#1e293b !important;
+background:linear-gradient(135deg,#1e3a8a,#2563eb,#3b82f6);
 color:white;
+border-radius:16px;
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
 }
 
-/* inputs dentro de declaración */
+/* textos */
+body.dark #declaracion label,
+body.dark #declaracion p{
+color:#e0f2fe;
+}
+
+/* inputs */
 body.dark #declaracion input{
-background:#0f172a;
+background:rgba(0,0,0,0.25);
 color:white;
+border:1px solid rgba(255,255,255,0.2);
 }
 
-/* botón declaración */
+/* botón */
 body.dark #declaracion button{
 background:#f59e0b;
 color:white;
+font-weight:bold;
 }
 
 /* 🔥 FIX HISTORIAL ITEMS */
