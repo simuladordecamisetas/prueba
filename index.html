@@ -265,6 +265,8 @@ color:#1e293b;
 <option value="otro">Otro</option>
 </select>
 
+<div id="badgeVendedor" style="margin-bottom:5px;"></div>
+
 <label>Vendedor</label>
 <select id="vendedor" onchange="cargarTodo()"></select>
 
@@ -886,6 +888,7 @@ envioSelect.onchange=calcular;
 render();
 calcular();
 generarInputsDeclaracion();
+actualizarBadge();
 }
   
 let pais = document.getElementById("pais").value;
@@ -1357,6 +1360,19 @@ document.getElementById("statTop").innerText = topVendedor.toUpperCase();
 document.getElementById("statProducto").innerText = nombres[topProducto];
 document.getElementById("statPedidos").innerText = historial.length;
 document.getElementById("statTotal").innerText = "$" + total;
+}
+
+function actualizarBadge(){
+let v = document.getElementById("vendedor").value;
+
+document.getElementById("badgeVendedor").innerHTML =
+`<span style="
+background:#2563eb;
+color:white;
+padding:4px 10px;
+border-radius:10px;
+font-size:12px;
+">Vendedor: ${v.toUpperCase()}</span>`;
 }
 
   </script>
