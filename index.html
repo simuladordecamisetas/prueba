@@ -219,6 +219,14 @@ color:#2563eb;
 <label>Cantidad</label>
 <input type="number" id="cantidad" value="1" min="1">
 
+<label>Talle</label>
+<select id="talle">
+  <option value="S">S</option>
+  <option value="M">M</option>
+  <option value="L">L</option>
+  <option value="XL">XL</option>
+</select>
+  
 <div id="extras"></div>
 
 <label style="font-weight:bold;">Tipo de envío</label>
@@ -393,7 +401,7 @@ let mensaje="Hola, quiero consultar por:\n\n";
 
 carrito.forEach(item=>{
 
-let size=" ";
+let size = item.talle || "-";
 let version=nombres[item.producto] ?? item.producto;
 
 let nombreNumero="";
@@ -895,7 +903,15 @@ extrasSel.push(c.value.replace("talle",""));
 
 let precio=(base+extraTotal)*cantidad;
 
-carritos[vendedor].push({producto,cantidad,precio,extras:extrasSel});
+let talle = document.getElementById("talle").value;
+
+carritos[vendedor].push({
+  producto,
+  cantidad,
+  precio,
+  extras: extrasSel,
+  talle: talle
+});
 
 render();
 calcular();
@@ -909,12 +925,14 @@ ul.innerHTML = "";
 
 (carritos[vendedor] || []).forEach((item, i) => {
 
-let extrasTexto = item.extras.length ? " + " + item.extras.join(" + ") : "";
+let extrasTexto = (item.extras && item.extras.length)
+  ? " + " + item.extras.join(" + ")
+  : "";
 
 ul.innerHTML += `
 <li class="item-carrito">
 <span>
-${item.cantidad}x ${nombres[item.producto]}${extrasTexto} - $${item.precio}
+${item.cantidad}x ${nombres[item.producto]} (Talle: ${item.talle || "—"})${extrasTexto}
 </span>
 <button class="btn-eliminar" onclick="eliminar(${i})">X</button>
 </li>
