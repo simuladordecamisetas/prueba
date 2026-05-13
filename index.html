@@ -1125,7 +1125,7 @@ if(e.includes("parches")){
 extrasTexto += ` (${e} +$1)`;
 }
 
-// 🔥 PERSONALIZACIÓN
+// 🔥 PERSONALIZACIÓN / TALLES
 else{
 extrasTexto += ` (${e} +$3)`;
 }
@@ -1140,27 +1140,11 @@ ul.innerHTML += `
 <span>
 <b>${item.cantidad}x ${nombres[item.producto]}</b>
 <br>
+
 <small>
 ${extrasTexto} • Total: $${item.precio}
 </small>
-</span>
 
-<button class="btn-eliminar" onclick="eliminar(${i})">
-X
-</button>
-
-</li>
-`;
-
-});
-
-}
-
-ul.innerHTML += `
-<li class="item-carrito">
-
-<span>
-${item.cantidad}x ${nombres[item.producto]}${extrasTexto} - $${item.precio}
 </span>
 
 <button class="btn-eliminar" onclick="eliminar(${i})">
