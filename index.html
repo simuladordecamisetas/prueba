@@ -287,111 +287,11 @@ transform:translateY(0);
 }
 }
 
-/* 🌙 MODO DARK */
-body.dark{
-background:#0f172a;
-color:#e2e8f0;
-}
-
-body.dark .container{
-background:rgba(15,23,42,0.9);
-}
-
-body.dark .card{
-background:rgba(30,41,59,0.95);
-color:white;
-}
-
-body.dark select,
-body.dark input{
-background:#1e293b;
-color:white;
-}
-
-body.dark .total{
-background:linear-gradient(135deg,#0ea5e9,#2563eb);
-}
-
-/* 🔥 CARRITO DARK COMPLETO */
-body.dark .item-carrito{
-background:#1e293b;
-color:white;
-}
-
-body.dark .item-carrito span{
-color:#e2e8f0;
-}
-
-body.dark .item-carrito .btn-eliminar{
-background:linear-gradient(135deg,#ef4444,#b91c1c);
-}
-
-body.dark #panelHistorial{
-background:#0f172a;
-color:white;
-}
-
-body.dark .stat{
-background:#1e293b;
-color:white;
-}
-
-/* 🔥 FIX DECLARACIÓN EN DARK */
-body.dark #declaracion{
-background:#1e293b !important;
-color:white;
-}
-
-/* inputs dentro de declaración */
-body.dark #declaracion input{
-background:#0f172a;
-color:white;
-}
-
-/* botón declaración */
-body.dark #declaracion button{
-background:#f59e0b;
-color:white;
-}
-/* 🔥 FIX HISTORIAL ITEMS */
-body.dark #historialContenido div{
-background:#1e293b !important;
-color:white;
-}
-
-/* texto gris que no se ve */
-body.dark #historialContenido{
-color:white;
-}
-
-/* botón repetir pedido */
-body.dark #historialContenido button{
-background:#2563eb;
-color:white;
-}
-
 </style>
 
 </head>
 
-<body id="body">
-
-<button id="btnModo" onclick="toggleModo()" 
-style="
-position:fixed;
-top:20px;
-left:20px;
-width:auto;
-padding:8px 12px;
-border-radius:50px;
-background:#111;
-color:white;
-z-index:2000;
-box-shadow:0 4px 10px rgba(0,0,0,0.3);
-font-size:18px;
-">
-🌙
-</button>
+<body>
 
 <div class="container">
 <h2>Simulador PRO</h2>
@@ -1073,7 +973,7 @@ if(!carritos[vendedor]) carritos[vendedor]=[];
 let v=vendedores[vendedor];
 let productos=v.prod[pais]||v.prod.otro;
 
-let base = productos[producto] + 5;
+let base=productos[producto];
 let extraTotal=0;
 let extrasSel=[];
 
@@ -1569,36 +1469,5 @@ document.getElementById("statProducto").innerText = nombres[topProducto];
 document.getElementById("statPedidos").innerText = historial.length;
 document.getElementById("statTotal").innerText = "$" + total;
 }
-
-function toggleModo(){
-let body = document.getElementById("body");
-let btn = document.getElementById("btnModo");
-
-body.classList.toggle("dark");
-
-// guardar
-if(body.classList.contains("dark")){
-localStorage.setItem("modo","dark");
-btn.innerText = "☀️";
-}else{
-localStorage.setItem("modo","light");
-btn.innerText = "🌙";
-}
-}
-
-// cargar al iniciar
-window.addEventListener("DOMContentLoaded", ()=>{
-
-let body = document.getElementById("body");
-let btn = document.getElementById("btnModo");
-
-if(localStorage.getItem("modo") === "dark"){
-body.classList.add("dark");
-btn.innerText = "☀️";
-}else{
-btn.innerText = "🌙";
-}
-
-});
 
   </script>
