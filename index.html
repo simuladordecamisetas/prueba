@@ -466,8 +466,6 @@ Calcular impuestos
 
 <h3>💱 Simulador Compra / Venta</h3>
 
-<h3>💱 Simulador Compra / Venta</h3>
-
 <label>Total de compra (USD)</label>
 <input type="number" id="usdValor" placeholder="Ej: 25">
 
@@ -475,8 +473,10 @@ Calcular impuestos
 <input type="number" id="precioVenta" placeholder="Ej: 65000">
 
 <label>Valor de 1 USD</label>
-<input type="number" id="cotizacionLocal" placeholder="Ej: 1430">
+<input type="number" id="cotizacionLocal" value="1430">
 
+<label>Correo Argentino (Opcional)</label>
+<input type="number" id="correoArg" placeholder="Ej: 7600">
 <button onclick="convertirMoneda()">
 Calcular ganancia
 </button>
@@ -1550,12 +1550,8 @@ let pais = document.getElementById("pais").value;
 
 let compraPesos = compraUSD * dolar;
 
-let correo = 0;
-
-// Argentina
-if(pais=="arg"){
-correo = 7600;
-}
+let correo =
+parseFloat(document.getElementById("correoArg").value) || 0;
 
 let costoFinal = compraPesos + correo;
 
