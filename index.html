@@ -1748,38 +1748,28 @@ if(costoFinal > 0){
     porcentaje = (ganancia / costoFinal) * 100;
 }
 
-// Resultado
+// Color y texto
 let textoResultado;
-let claseResultado;
+let colorResultado;
 
 if(ganancia >= 0){
     textoResultado = "🟢 Ganancia";
-    claseResultado = "ganancia";
+    colorResultado = "#16a34a";
 }else{
     textoResultado = "🔴 Pérdida";
-    claseResultado = "perdida";
+    colorResultado = "#dc2626";
 }
 
 document.getElementById("resultadoConversion").innerHTML = `
-
-<div><b>💵 Compra:</b> $${compraUSD.toFixed(2)} USD</div>
-
-<div><b>💱 Costo local:</b> $${compraPesos.toFixed(0)}</div>
-
-<div><b>📦 Correo:</b> $${correo.toFixed(0)}</div>
-
-<div><b>💰 Costo total:</b> $${costoFinal.toFixed(0)}</div>
-
-<div><b>🏷️ Venta:</b> $${venta.toFixed(0)}</div>
-
-<hr style="margin:10px 0;">
-
-<div class="${claseResultado}">
+<b>💵 Compra:</b> $${compraUSD.toFixed(2)} USD<br>
+<b>💱 Costo local:</b> $${compraPesos.toFixed(0)}<br>
+<b>📦 Correo:</b> $${correo.toFixed(0)}<br>
+<b>💰 Costo total:</b> $${costoFinal.toFixed(0)}<br>
+<b>🏷️ Venta:</b> $${venta.toFixed(0)}<hr style="margin:10px 0;">
+<div style="color:${colorResultado};font-size:22px;font-weight:bold;">
 ${textoResultado}: $${Math.abs(ganancia).toFixed(0)}
 </div>
-
-<div><b>📈 Rentabilidad:</b> ${porcentaje.toFixed(1)}%</div>
-
+<b>📈 Rentabilidad:</b> ${porcentaje.toFixed(1)}%
 `;
 
 }
