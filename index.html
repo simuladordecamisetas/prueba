@@ -286,6 +286,35 @@ opacity:1;
 transform:translateY(0);
 }
 }
+#btnConversor{
+position:fixed;
+top:75px;   /* debajo del historial */
+right:20px;
+width:auto;
+padding:10px 14px;
+border-radius:50px;
+background:#16a34a;
+color:white;
+z-index:2000;
+}
+
+#panelConversor{
+position:fixed;
+top:0;
+right:-400px;
+width:350px;
+height:100%;
+background:white;
+padding:20px;
+overflow:auto;
+transition:.3s;
+box-shadow:-5px 0 20px rgba(0,0,0,.3);
+z-index:998;
+}
+
+#panelConversor.activo{
+right:0;
+}
 
 </style>
 
@@ -362,34 +391,6 @@ transform:translateY(0);
 
 </div>
 
-<!-- 💱 SIMULADOR COMPRA / VENTA -->
-<div style="margin-top:15px;
-background:#eef7ff;
-padding:15px;
-border-radius:12px;
-box-shadow:0 5px 15px rgba(0,0,0,.15);">
-
-<h3 style="margin-top:0;">💱 Simulador Compra / Venta</h3>
-
-<label>Total en USD</label>
-<input type="number" id="usdValor" placeholder="Ej: 25">
-
-<label>Valor de 1 USD en tu moneda</label>
-<input type="number" id="cotizacionLocal" placeholder="Ej: 1500">
-
-<button onclick="convertirMoneda()"
-style="background:#2563eb;color:white;">
-Convertir
-</button>
-
-<div id="resultadoConversion"
-style="margin-top:12px;
-font-size:20px;
-font-weight:bold;
-text-align:center;">
-</div>
-
-</div>
 
 <!-- 📦 DECLARACIÓN -->
 <div id="declaracion" style="display:none;margin-top:15px;background:#fff3cd;padding:12px;border-radius:10px;">
@@ -454,6 +455,28 @@ Calcular impuestos
 
   <!-- 📚 HISTORIAL -->
   <div id="historialContenido"></div>
+
+</div>
+  
+  <button onclick="toggleConversor()" id="btnConversor">
+💱 Conversor
+</button>
+
+  <div id="panelConversor">
+
+<h3>💱 Simulador Compra / Venta</h3>
+
+<label>Total en USD</label>
+<input type="number" id="usdValor" placeholder="Ej: 25">
+
+<label>Valor de 1 USD en tu moneda</label>
+<input type="number" id="cotizacionLocal" placeholder="Ej: 1500">
+
+<button onclick="convertirMoneda()">
+Convertir
+</button>
+
+<div id="resultadoConversion"></div>
 
 </div>
 <script>
@@ -1498,22 +1521,8 @@ document.getElementById("statProducto").innerText = nombres[topProducto];
 document.getElementById("statPedidos").innerText = historial.length;
 document.getElementById("statTotal").innerText = "$" + total;
 }
-function convertirMoneda(){
-
-let usd = parseFloat(document.getElementById("usdValor").value) || 0;
-let cot = parseFloat(document.getElementById("cotizacionLocal").value) || 0;
-
-if(usd<=0 || cot<=0){
-document.getElementById("resultadoConversion").innerHTML="";
-return;
-}
-
-let total = usd * cot;
-
-document.getElementById("resultadoConversion").innerHTML =
-"💰 Total: <span style='color:#2563eb'>" +
-total.toLocaleString() +
-"</span>";
-
+function toggleConversor(){
+document.getElementById("panelConversor")
+.classList.toggle("activo");
 }
   </script>
