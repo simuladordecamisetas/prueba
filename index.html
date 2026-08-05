@@ -1419,8 +1419,16 @@ calcular();
 alert("Pedido cargado nuevamente ✅");
 }
 function toggleHistorial(){
-let panel = document.getElementById("panelHistorial");
-panel.classList.toggle("activo");
+
+let historial = document.getElementById("panelHistorial");
+let conversor = document.getElementById("panelConversor");
+
+// cerrar conversor
+conversor.classList.remove("activo");
+
+// abrir/cerrar historial
+historial.classList.toggle("activo");
+
 }
 
 function vaciarHistorial(){
@@ -1536,8 +1544,16 @@ document.getElementById("statPedidos").innerText = historial.length;
 document.getElementById("statTotal").innerText = "$" + total;
 }
 function toggleConversor(){
-document.getElementById("panelConversor")
-.classList.toggle("activo");
+
+let historial = document.getElementById("panelHistorial");
+let conversor = document.getElementById("panelConversor");
+
+// cerrar historial
+historial.classList.remove("activo");
+
+// abrir/cerrar conversor
+conversor.classList.toggle("activo");
+
 }
 
 function convertirMoneda(){
