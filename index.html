@@ -466,19 +466,33 @@ Calcular impuestos
 
 <h3>💱 Simulador Compra / Venta</h3>
 
-<label>Total en USD</label>
+<h3>💱 Simulador Compra / Venta</h3>
+
+<label>Total de compra (USD)</label>
 <input type="number" id="usdValor" placeholder="Ej: 25">
 
-<label>Valor de 1 USD en tu moneda</label>
-<input type="number" id="cotizacionLocal" placeholder="Ej: 1500">
+<label>Precio al que lo vas a vender</label>
+<input type="number" id="precioVenta" placeholder="Ej: 65000">
+
+<label>Valor de 1 USD</label>
+<input type="number" id="cotizacionLocal" placeholder="Ej: 1430">
 
 <button onclick="convertirMoneda()">
-Convertir
+Calcular ganancia
 </button>
 
-<div id="resultadoConversion"></div>
-
+<div id="resultadoConversion"
+style="
+margin-top:15px;
+padding:12px;
+background:#f8fafc;
+border-radius:10px;
+font-weight:bold;
+white-space:pre-line;
+">
+  
 </div>
+  
 <script>
 
 // 📞 CONTACTOS REALES
@@ -1524,5 +1538,58 @@ document.getElementById("statTotal").innerText = "$" + total;
 function toggleConversor(){
 document.getElementById("panelConversor")
 .classList.toggle("activo");
+}
+
+function convertirMoneda(){
+
+let compraUSD = parseFloat(document.getElementById("usdValor").value) || 0;
+let venta = parseFloat(document.getElementById("precioVenta").value) || 0;
+let dolar = parseFloat(document.getElementById("cotizacionLocal").value) || 0;
+
+let pais = document.getElementById("pais").value;
+
+let compraPesos = compraUSD * dolar;
+
+let correo = 0;
+
+// Argentina
+if(pais=="arg"){
+correo = 7600;
+}
+
+let costoFinal = compraPesos + correo;
+
+let ganancia = venta - costoFinal;
+
+let porcentaje = 0;
+
+if(costoFinal>0){
+porcentaje = (ganancia/costoFinal)*100;
+}
+
+let texto =
+`Compra:
+$${compraUSD.toFixed(2)} USD
+
+Costo en moneda local:
+$${compraPesos.toFixed(0)}
+
+Correo:
+$${correo.toFixed(0)}
+
+Costo total:
+$${costoFinal.toFixed(0)}
+
+Venta:
+$${venta.toFixed(0)}
+
+Ganancia:
+$${ganancia.toFixed(0)}
+
+Rentabilidad:
+${porcentaje.toFixed(1)}%`;
+
+document.getElementById("resultadoConversion").innerText = texto;
+
 }
   </script>
