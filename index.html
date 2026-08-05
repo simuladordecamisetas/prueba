@@ -1717,46 +1717,65 @@ let compraUSD = parseFloat(document.getElementById("usdValor").value) || 0;
 let venta = parseFloat(document.getElementById("precioVenta").value) || 0;
 let dolar = parseFloat(document.getElementById("cotizacionLocal").value) || 0;
 
-let pais = document.getElementById("pais").value;
+let correo = parseFloat(document.getElementById("correoArg").value) || 0;
 
 let compraPesos = compraUSD * dolar;
-
-let correo =
-parseFloat(document.getElementById("correoArg").value) || 0;
-
 let costoFinal = compraPesos + correo;
-
 let ganancia = venta - costoFinal;
 
 let porcentaje = 0;
 
-if(costoFinal>0){
-porcentaje = (ganancia/costoFinal)*100;
+if(costoFinal > 0){
+    porcentaje = (ganancia / costoFinal) * 100;
 }
 
-let texto =
-`Compra:
+// Color y texto según resultado
+let textoGanancia;
+let colorGanancia;
+
+if(ganancia >= 0){
+    textoGanancia = "🟢 Ganancia";
+    colorGanancia = "#16a34a";
+}else{
+    textoGanancia = "🔴 Pérdida";
+    colorGanancia = "#dc2626";
+}
+
+document.getElementById("resultadoConversion").innerHTML = `
+<b>Compra:</b><br>
 $${compraUSD.toFixed(2)} USD
 
-Costo en moneda local:
+<br><br>
+
+<b>Costo en moneda local:</b><br>
 $${compraPesos.toFixed(0)}
 
-Correo:
+<br><br>
+
+<b>Correo:</b><br>
 $${correo.toFixed(0)}
 
-Costo total:
+<br><br>
+
+<b>Costo total:</b><br>
 $${costoFinal.toFixed(0)}
 
-Venta:
+<br><br>
+
+<b>Venta:</b><br>
 $${venta.toFixed(0)}
 
-Ganancia:
-$${ganancia.toFixed(0)}
+<br><br>
 
-Rentabilidad:
-${porcentaje.toFixed(1)}%`;
+<div style="color:${colorGanancia};font-size:20px;font-weight:bold;">
+${textoGanancia}: $${Math.abs(ganancia).toFixed(0)}
+</div>
 
-document.getElementById("resultadoConversion").innerText = texto;
+<br>
+
+<b>Rentabilidad:</b><br>
+${porcentaje.toFixed(1)}%
+`;
 
 }
   </script>
