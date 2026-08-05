@@ -463,24 +463,22 @@ Calcular impuestos
 </button>
 
   <div id="panelConversor">
-<div id="panelConversor">
+
+<h3>💱 Simulador Compra / Venta</h3>
 
 <h3>💱 Simulador Compra / Venta</h3>
 
 <label>Total de compra (USD)</label>
 <input type="number" id="usdValor" placeholder="Ej: 25">
 
-<label>Total de venta (Moneda local)</label>
-<input type="number" id="precioVenta" placeholder="Ej: 85000">
+<label>Precio al que lo vas a vender</label>
+<input type="number" id="precioVenta" placeholder="Ej: 65000">
 
-<label>Valor de 1 USD en tu moneda</label>
-<input type="number" id="cotizacionLocal" placeholder="Ej: 1500">
-
-<label>Correo Argentino (Opcional)</label>
-<input type="number" id="correoArg" placeholder="0 si no aplica">
+<label>Valor de 1 USD</label>
+<input type="number" id="cotizacionLocal" placeholder="Ej: 1430">
 
 <button onclick="convertirMoneda()">
-Calcular
+Calcular ganancia
 </button>
 
 <div id="resultadoConversion"
@@ -492,8 +490,7 @@ border-radius:10px;
 font-weight:bold;
 white-space:pre-line;
 ">
-</div>
-
+  
 </div>
   
 <script>
@@ -1549,44 +1546,50 @@ let compraUSD = parseFloat(document.getElementById("usdValor").value) || 0;
 let venta = parseFloat(document.getElementById("precioVenta").value) || 0;
 let dolar = parseFloat(document.getElementById("cotizacionLocal").value) || 0;
 
+let pais = document.getElementById("pais").value;
+
 let compraPesos = compraUSD * dolar;
 
-// Correo Argentino (opcional)
-let correo = parseFloat(document.getElementById("correoArg").value) || 0;
+let correo = 0;
 
-// Costo total
-let costoFinal = compraPesos + correo;
-
-// Ganancia
-let ganancia = venta - costoFinal;
-
-// Rentabilidad
-let porcentaje = 0;
-
-if(costoFinal > 0){
-    porcentaje = (ganancia / costoFinal) * 100;
+// Argentina
+if(pais=="arg"){
+correo = 7600;
 }
 
-// Estado
-let estado = ganancia >= 0 ? "🟢 GANANCIA" : "🔴 PÉRDIDA";
+let costoFinal = compraPesos + correo;
 
-document.getElementById("resultadoConversion").innerHTML = `
-<b>Total de compra:</b> $${compraUSD.toFixed(2)} USD<br><br>
+let ganancia = venta - costoFinal;
 
-<b>Costo en moneda local:</b> $${compraPesos.toFixed(0)}<br>
+let porcentaje = 0;
 
-<b>Correo Argentino:</b> $${correo.toFixed(0)}<br>
+if(costoFinal>0){
+porcentaje = (ganancia/costoFinal)*100;
+}
 
-<b>Costo total:</b> $${costoFinal.toFixed(0)}<br><br>
+let texto =
+`Compra:
+$${compraUSD.toFixed(2)} USD
 
-<b>Total de venta:</b> $${venta.toFixed(0)}<br><br>
+Costo en moneda local:
+$${compraPesos.toFixed(0)}
 
-<b>${estado}</b><br>
+Correo:
+$${correo.toFixed(0)}
 
-<b>Resultado:</b> $${ganancia.toFixed(0)}<br>
+Costo total:
+$${costoFinal.toFixed(0)}
 
-<b>Rentabilidad:</b> ${porcentaje.toFixed(1)}%
-`;
+Venta:
+$${venta.toFixed(0)}
+
+Ganancia:
+$${ganancia.toFixed(0)}
+
+Rentabilidad:
+${porcentaje.toFixed(1)}%`;
+
+document.getElementById("resultadoConversion").innerText = texto;
 
 }
   </script>
