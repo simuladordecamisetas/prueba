@@ -288,32 +288,156 @@ transform:translateY(0);
 }
 #btnConversor{
 position:fixed;
-top:75px;   /* debajo del historial */
+top:75px;
 right:20px;
 width:auto;
-padding:10px 14px;
-border-radius:50px;
-background:#16a34a;
+padding:10px 16px;
+
+background:linear-gradient(135deg,#16a34a,#15803d);
 color:white;
+
+border:none;
+border-radius:50px;
+
+font-weight:bold;
+
+cursor:pointer;
+
 z-index:2000;
+
+box-shadow:0 6px 18px rgba(0,0,0,.35);
+
+transition:.25s;
+}
+
+#btnConversor:hover{
+transform:translateY(-2px);
+box-shadow:0 10px 25px rgba(0,0,0,.4);
+}
+
+#btnConversor:active{
+transform:scale(.97);
 }
 
 #panelConversor{
+
 position:fixed;
 top:0;
 right:-400px;
+
 width:350px;
 height:100%;
-background:white;
+
 padding:20px;
-overflow:auto;
-transition:.3s;
+
+overflow-y:auto;
+
+background:rgba(255,255,255,.95);
+backdrop-filter:blur(10px);
+
 box-shadow:-5px 0 20px rgba(0,0,0,.3);
+
+border-top-left-radius:18px;
+border-bottom-left-radius:18px;
+
+transition:.3s;
+
 z-index:998;
+
 }
 
 #panelConversor.activo{
 right:0;
+}
+
+#panelConversor h3{
+
+text-align:center;
+
+font-size:24px;
+
+margin-bottom:20px;
+
+background:linear-gradient(90deg,#16a34a,#22c55e);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+}
+
+#panelConversor input{
+
+width:100%;
+
+padding:12px;
+
+margin:8px 0 18px;
+
+border:none;
+border-radius:12px;
+
+background:#f1f5f9;
+
+box-shadow:inset 0 2px 6px rgba(0,0,0,.08);
+
+}
+
+#panelConversor button{
+
+width:100%;
+
+padding:12px;
+
+margin-top:10px;
+
+border:none;
+border-radius:12px;
+
+background:linear-gradient(135deg,#16a34a,#15803d);
+
+color:white;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:.2s;
+
+box-shadow:0 6px 15px rgba(0,0,0,.2);
+
+}
+
+#panelConversor button:hover{
+
+transform:translateY(-2px);
+
+box-shadow:0 10px 25px rgba(0,0,0,.3);
+
+}
+
+#resultadoConversion{
+
+margin-top:20px;
+
+padding:18px;
+
+border-radius:18px;
+
+background:linear-gradient(135deg,#ecfdf5,#ffffff);
+
+border:2px solid #bbf7d0;
+
+box-shadow:0 8px 20px rgba(0,0,0,.12);
+
+white-space:pre-line;
+
+font-size:17px;
+
+font-weight:bold;
+
+line-height:1.8;
+
+color:#1e293b;
+
 }
 
 </style>
@@ -464,7 +588,9 @@ Calcular impuestos
 
   <div id="panelConversor">
 
-<h3>💱 Simulador Compra / Venta</h3>
+<h3 style="text-align:center;font-size:24px;color:#2563eb;">
+💱 Simulador Compra / Venta
+</h3>
 
 <label>Total de compra (USD)</label>
 <input type="number" id="usdValor" placeholder="Ej: 25">
@@ -477,20 +603,38 @@ Calcular impuestos
 
 <label>Correo Argentino (Solo Argentina)</label>
 <input type="number" id="correoArg" placeholder="Ej: 7600">
-<button onclick="convertirMoneda()">
-Calcular ganancia
+<button
+onclick="convertirMoneda()"
+style="
+width:100%;
+padding:14px;
+margin-top:15px;
+border:none;
+border-radius:14px;
+background:#2563eb;
+color:white;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+box-shadow:0 6px 15px rgba(37,99,235,.3);
+">
+💰 Calcular ganancia
 </button>
 
 <div id="resultadoConversion"
 style="
-margin-top:15px;
-padding:12px;
-background:#f8fafc;
-border-radius:10px;
+margin-top:20px;
+padding:18px;
+background:#eff6ff;
+border:1px solid #bfdbfe;
+border-radius:18px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
 font-weight:bold;
 white-space:pre-line;
+line-height:1.8;
+font-size:16px;
 ">
-  
+
 </div>
   
 <script>
